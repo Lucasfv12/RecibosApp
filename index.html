@@ -10,331 +10,152 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 :root {
-  --bg: #0f0f11;
-  --bg2: #17171a;
-  --bg3: #1e1e23;
-  --bg4: #26262d;
-  --border: rgba(255,255,255,0.08);
-  --border2: rgba(255,255,255,0.14);
-  --text: #f0f0f2;
-  --text2: #8e8e9a;
-  --text3: #5a5a66;
-  --lucas: #6c8aff;
-  --lucas-bg: rgba(108,138,255,0.12);
-  --karina: #ff7eb3;
-  --karina-bg: rgba(255,126,179,0.12);
-  --green: #4ade80;
-  --green-bg: rgba(74,222,128,0.1);
-  --red: #f87171;
-  --red-bg: rgba(248,113,113,0.1);
-  --amber: #fbbf24;
-  --amber-bg: rgba(251,191,36,0.1);
-  --radius: 12px;
-  --radius-sm: 8px;
-  font-family: 'Syne', sans-serif;
+  --bg:#0f0f11;--bg2:#17171a;--bg3:#1e1e23;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --text:#f0f0f2;--text2:#8e8e9a;--text3:#5a5a66;
+  --lucas:#6c8aff;--lucas-bg:rgba(108,138,255,0.12);
+  --karina:#ff7eb3;--karina-bg:rgba(255,126,179,0.12);
+  --green:#4ade80;--green-bg:rgba(74,222,128,0.1);
+  --red:#f87171;--red-bg:rgba(248,113,113,0.1);
+  --amber:#fbbf24;
+  --radius:12px;--radius-sm:8px;
+  font-family:'Syne',sans-serif;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { background: var(--bg); color: var(--text); min-height: 100vh; }
-body { min-height: 100vh; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{background:var(--bg);color:var(--text);min-height:100vh;}
 
-/* ── LOGIN ── */
-#login-screen {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 2rem;
-  background: var(--bg);
-  position: relative;
-  overflow: hidden;
-}
-#login-screen::before {
-  content: '';
-  position: absolute;
-  width: 600px; height: 600px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(108,138,255,0.06) 0%, transparent 70%);
-  top: -200px; left: -100px;
-  pointer-events: none;
-}
-#login-screen::after {
-  content: '';
-  position: absolute;
-  width: 500px; height: 500px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,126,179,0.06) 0%, transparent 70%);
-  bottom: -150px; right: -50px;
-  pointer-events: none;
-}
-.login-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text2);
-  text-align: center;
-}
-.login-title span { color: var(--text); }
-.login-cards {
-  display: flex;
-  gap: 1rem;
-  z-index: 1;
-}
-.login-card {
-  width: 180px;
-  padding: 2rem 1.5rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: var(--bg2);
-  cursor: pointer;
-  text-align: center;
-  transition: transform 0.15s, border-color 0.15s, background 0.15s;
-  display: flex; flex-direction: column; align-items: center; gap: 1rem;
-}
-.login-card:hover { transform: translateY(-4px); }
-.login-card.lucas:hover { border-color: var(--lucas); background: var(--lucas-bg); }
-.login-card.karina:hover { border-color: var(--karina); background: var(--karina-bg); }
-.login-avatar {
-  width: 56px; height: 56px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.4rem; font-weight: 700;
-}
-.lucas .login-avatar { background: var(--lucas-bg); color: var(--lucas); }
-.karina .login-avatar { background: var(--karina-bg); color: var(--karina); }
-.login-name { font-size: 1rem; font-weight: 600; }
-.login-sub { font-size: 0.75rem; color: var(--text2); }
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2rem;position:relative;overflow:hidden;}
+#login-screen::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(108,138,255,0.06) 0%,transparent 70%);top:-200px;left:-100px;pointer-events:none;}
+#login-screen::after{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(255,126,179,0.06) 0%,transparent 70%);bottom:-150px;right:-50px;pointer-events:none;}
+.login-title{font-size:1.5rem;font-weight:700;color:var(--text2);text-align:center;z-index:1;}
+.login-title span{color:var(--text);}
+.login-cards{display:flex;gap:1rem;z-index:1;}
+.login-card{width:180px;padding:2rem 1.5rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg2);cursor:pointer;text-align:center;transition:transform 0.15s,border-color 0.15s,background 0.15s;display:flex;flex-direction:column;align-items:center;gap:1rem;}
+.login-card:hover{transform:translateY(-4px);}
+.login-card.lucas:hover{border-color:var(--lucas);background:var(--lucas-bg);}
+.login-card.karina:hover{border-color:var(--karina);background:var(--karina-bg);}
+.login-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;}
+.lucas .login-avatar{background:var(--lucas-bg);color:var(--lucas);}
+.karina .login-avatar{background:var(--karina-bg);color:var(--karina);}
+.login-name{font-size:1rem;font-weight:600;}
+.login-sub{font-size:0.75rem;color:var(--text2);}
+.login-loading{font-size:0.82rem;color:var(--text3);display:none;align-items:center;gap:0.5rem;z-index:1;}
+.login-loading.show{display:flex;}
 
-/* ── APP SHELL ── */
-#app { display: none; min-height: 100vh; }
+#app{display:none;min-height:100vh;}
+header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;}
+.header-left{display:flex;align-items:center;gap:0.75rem;}
+.user-pill{display:flex;align-items:center;gap:0.5rem;padding:0.35rem 0.75rem;border-radius:99px;font-size:0.8rem;font-weight:600;}
+.user-pill.lucas{background:var(--lucas-bg);color:var(--lucas);}
+.user-pill.karina{background:var(--karina-bg);color:var(--karina);}
+.app-title{font-size:0.95rem;font-weight:600;color:var(--text2);}
+.logout-btn{font-size:0.78rem;color:var(--text3);cursor:pointer;background:none;border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.3rem 0.7rem;font-family:inherit;transition:color 0.15s;}
+.logout-btn:hover{color:var(--text);}
+.sync-indicator{font-size:0.72rem;color:var(--text3);display:flex;align-items:center;gap:0.35rem;font-family:'DM Mono',monospace;}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--green);}
+.sync-dot.syncing{background:var(--amber);animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
 
-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg);
-  position: sticky; top: 0; z-index: 100;
-}
-.header-left { display: flex; align-items: center; gap: 0.75rem; }
-.user-pill {
-  display: flex; align-items: center; gap: 0.5rem;
-  padding: 0.35rem 0.75rem;
-  border-radius: 99px;
-  font-size: 0.8rem; font-weight: 600;
-}
-.user-pill.lucas { background: var(--lucas-bg); color: var(--lucas); }
-.user-pill.karina { background: var(--karina-bg); color: var(--karina); }
-.app-title { font-size: 0.95rem; font-weight: 600; color: var(--text2); }
-.logout-btn {
-  font-size: 0.78rem; color: var(--text3); cursor: pointer;
-  background: none; border: 1px solid var(--border); border-radius: var(--radius-sm);
-  padding: 0.3rem 0.7rem; font-family: inherit; transition: color 0.15s, border-color 0.15s;
-}
-.logout-btn:hover { color: var(--text); border-color: var(--border2); }
+nav{display:flex;gap:0.25rem;padding:0.75rem 1.5rem;border-bottom:1px solid var(--border);background:var(--bg);overflow-x:auto;}
+.nav-btn{padding:0.45rem 1rem;border-radius:var(--radius-sm);font-size:0.82rem;font-weight:500;cursor:pointer;background:none;border:none;color:var(--text2);font-family:inherit;display:flex;align-items:center;gap:0.4rem;white-space:nowrap;transition:color 0.12s,background 0.12s;}
+.nav-btn:hover{color:var(--text);background:var(--bg3);}
+.nav-btn.active{color:var(--text);background:var(--bg3);}
+main{padding:1.5rem;max-width:860px;margin:0 auto;}
 
-nav {
-  display: flex; gap: 0.25rem;
-  padding: 0.75rem 1.5rem;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg);
-  overflow-x: auto;
-}
-.nav-btn {
-  padding: 0.45rem 1rem; border-radius: var(--radius-sm);
-  font-size: 0.82rem; font-weight: 500; cursor: pointer;
-  background: none; border: none; color: var(--text2); font-family: inherit;
-  display: flex; align-items: center; gap: 0.4rem;
-  white-space: nowrap; transition: color 0.12s, background 0.12s;
-}
-.nav-btn:hover { color: var(--text); background: var(--bg3); }
-.nav-btn.active { color: var(--text); background: var(--bg3); }
-
-main { padding: 1.5rem; max-width: 860px; margin: 0 auto; }
-
-/* ── COMPONENTS ── */
-.section-header { margin-bottom: 1.25rem; }
-.section-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.2rem; }
-.section-sub { font-size: 0.82rem; color: var(--text2); }
-
-.card {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem;
-}
-.card-sm { padding: 0.9rem 1rem; }
-
-.upload-zone {
-  border: 1.5px dashed var(--border2); border-radius: var(--radius);
-  padding: 2.5rem; text-align: center; cursor: pointer;
-  background: var(--bg2); transition: border-color 0.15s, background 0.15s;
-  margin-bottom: 1rem;
-}
-.upload-zone:hover { border-color: var(--lucas); background: var(--lucas-bg); }
-.upload-zone .ti { font-size: 2rem; color: var(--text3); display: block; margin-bottom: 0.5rem; }
-.upload-zone p { font-size: 0.85rem; color: var(--text2); }
-.upload-zone strong { color: var(--text); }
-
-.loading-bar {
-  display: flex; align-items: center; gap: 0.75rem;
-  background: var(--bg3); border-radius: var(--radius-sm);
-  padding: 0.85rem 1rem; font-size: 0.83rem; color: var(--text2);
-  margin-bottom: 1rem;
-}
-.spinner {
-  width: 16px; height: 16px; border-radius: 50%;
-  border: 2px solid var(--border2); border-top-color: var(--lucas);
-  animation: spin 0.8s linear infinite; flex-shrink: 0;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.error-box {
-  background: var(--red-bg); border: 1px solid var(--red);
-  border-radius: var(--radius-sm); padding: 0.85rem 1rem;
-  font-size: 0.83rem; color: var(--red); margin-bottom: 1rem;
-}
-.success-box {
-  background: var(--green-bg); border: 1px solid var(--green);
-  border-radius: var(--radius-sm); padding: 0.85rem 1rem;
-  font-size: 0.83rem; color: var(--green); margin-bottom: 1rem;
-  display: flex; align-items: center; gap: 0.5rem;
-}
-
-.field-label { font-size: 0.72rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.3rem; font-family: 'DM Mono', monospace; }
-.field-input {
-  width: 100%; background: var(--bg3); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 0.5rem 0.75rem;
-  font-size: 0.85rem; color: var(--text); font-family: inherit;
-  transition: border-color 0.15s;
-}
-.field-input:focus { outline: none; border-color: var(--border2); }
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
-
-.divider-label {
-  font-size: 0.7rem; color: var(--text3); text-transform: uppercase;
-  letter-spacing: 0.08em; padding: 0.5rem 0; margin: 0.75rem 0 0.5rem;
-  border-bottom: 1px solid var(--border); font-family: 'DM Mono', monospace;
-  display: flex; align-items: center; gap: 0.5rem;
-}
-
-.concepto-row {
-  display: grid; grid-template-columns: 1fr 130px 28px;
-  gap: 0.5rem; align-items: center; margin-bottom: 0.4rem;
-}
-.del-btn { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 1rem; padding: 0; transition: color 0.12s; }
-.del-btn:hover { color: var(--red); }
-.add-btn {
-  font-size: 0.75rem; color: var(--text3); cursor: pointer;
-  background: none; border: 1px dashed var(--border2);
-  border-radius: var(--radius-sm); padding: 0.3rem 0.75rem;
-  margin-top: 0.25rem; font-family: inherit; transition: color 0.12s, border-color 0.12s;
-}
-.add-btn:hover { color: var(--text); border-color: var(--border2); }
-
-.totales-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
-.total-card { background: var(--bg3); border-radius: var(--radius-sm); padding: 0.75rem 0.9rem; }
-.total-label { font-size: 0.72rem; color: var(--text2); margin-bottom: 0.25rem; font-family: 'DM Mono', monospace; }
-.total-valor { font-size: 0.95rem; font-weight: 600; font-family: 'DM Mono', monospace; }
-
-.save-btn {
-  width: 100%; padding: 0.75rem; font-size: 0.9rem; font-weight: 600;
-  cursor: pointer; border-radius: var(--radius-sm);
-  border: none; margin-top: 1rem; font-family: inherit;
-  transition: opacity 0.15s;
-}
-.save-btn.lucas-btn { background: var(--lucas); color: #fff; }
-.save-btn.karina-btn { background: var(--karina); color: #fff; }
-.save-btn:hover { opacity: 0.85; }
-
-/* badges */
-.badge {
-  font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 99px;
-  font-weight: 600; font-family: 'DM Mono', monospace; white-space: nowrap;
-}
-.badge-sub { background: rgba(108,138,255,0.15); color: var(--lucas); }
-.badge-nosub { background: rgba(74,222,128,0.15); color: var(--green); }
-.badge-lucas { background: var(--lucas-bg); color: var(--lucas); }
-.badge-karina { background: var(--karina-bg); color: var(--karina); }
-.badge-haber { background: var(--green-bg); color: var(--green); }
-.badge-deduc { background: var(--red-bg); color: var(--red); }
-
-/* hist */
-.hist-item { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 0.75rem; overflow: hidden; }
-.hist-header { display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1.1rem; cursor: pointer; background: var(--bg2); transition: background 0.12s; }
-.hist-header:hover { background: var(--bg3); }
-.hist-detail { padding: 1rem 1.1rem; border-top: 1px solid var(--border); display: none; }
-.hist-detail.open { display: block; }
-
-/* comp table */
-.comp-wrap { overflow-x: auto; }
-.comp-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; table-layout: fixed; font-family: 'DM Mono', monospace; }
-.comp-table th { padding: 0.6rem 0.75rem; font-size: 0.7rem; color: var(--text3); font-weight: 500; border-bottom: 1px solid var(--border); text-align: left; background: var(--bg3); }
-.comp-table td { padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--border); color: var(--text); word-break: break-word; vertical-align: middle; }
-.comp-table tr:last-child td { border-bottom: none; }
-.comp-table tr.subtotal td { background: var(--bg3); font-weight: 500; }
-.comp-table tr.row-neto td { background: rgba(108,138,255,0.08); color: var(--lucas); font-weight: 600; }
-.ta-r { text-align: right; }
-.delta-pos { color: var(--green); font-weight: 600; }
-.delta-neg { color: var(--red); font-weight: 600; }
-.delta-zero { color: var(--text3); }
-.delta-new { color: var(--amber); font-style: italic; }
-
-/* metric cards */
-.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 0.75rem; margin-bottom: 1.25rem; }
-.metric-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; }
-.metric-label { font-size: 0.72rem; color: var(--text2); margin-bottom: 0.35rem; font-family: 'DM Mono', monospace; }
-.metric-val { font-size: 1.1rem; font-weight: 700; font-family: 'DM Mono', monospace; }
-.metric-sub { font-size: 0.72rem; color: var(--text3); margin-top: 0.2rem; font-family: 'DM Mono', monospace; }
-
-.chart-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
-.chart-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem; color: var(--text2); }
-
-.user-section-label {
-  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.08em; padding: 0.4rem 0.75rem; border-radius: 99px;
-  margin-bottom: 0.75rem; display: inline-flex; align-items: center; gap: 0.4rem;
-}
-
-.empty-state { text-align: center; padding: 3rem 1rem; color: var(--text3); font-size: 0.85rem; }
-.comp-select {
-  background: var(--bg3); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 0.45rem 0.75rem;
-  font-size: 0.83rem; color: var(--text); font-family: inherit;
-}
-.comp-select:focus { outline: none; border-color: var(--border2); }
-
-.tab { display: none; }
-.tab.active { display: block; }
+.section-header{margin-bottom:1.25rem;}
+.section-title{font-size:1.1rem;font-weight:700;margin-bottom:0.2rem;}
+.section-sub{font-size:0.82rem;color:var(--text2);}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem;}
+.upload-zone{border:1.5px dashed var(--border2);border-radius:var(--radius);padding:2.5rem;text-align:center;cursor:pointer;background:var(--bg2);transition:border-color 0.15s,background 0.15s;margin-bottom:1rem;}
+.upload-zone:hover{border-color:var(--lucas);background:var(--lucas-bg);}
+.upload-zone .ti{font-size:2rem;color:var(--text3);display:block;margin-bottom:0.5rem;}
+.upload-zone p{font-size:0.85rem;color:var(--text2);}
+.upload-zone strong{color:var(--text);}
+.loading-bar{display:flex;align-items:center;gap:0.75rem;background:var(--bg3);border-radius:var(--radius-sm);padding:0.85rem 1rem;font-size:0.83rem;color:var(--text2);margin-bottom:1rem;}
+.spinner{width:16px;height:16px;border-radius:50%;border:2px solid var(--border2);border-top-color:var(--lucas);animation:spin 0.8s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.error-box{background:var(--red-bg);border:1px solid var(--red);border-radius:var(--radius-sm);padding:0.85rem 1rem;font-size:0.83rem;color:var(--red);margin-bottom:1rem;}
+.success-box{background:var(--green-bg);border:1px solid var(--green);border-radius:var(--radius-sm);padding:0.85rem 1rem;font-size:0.83rem;color:var(--green);margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;}
+.field-label{font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.3rem;font-family:'DM Mono',monospace;}
+.field-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.5rem 0.75rem;font-size:0.85rem;color:var(--text);font-family:inherit;transition:border-color 0.15s;}
+.field-input:focus{outline:none;border-color:var(--border2);}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:0.75rem;}
+.divider-label{font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;padding:0.5rem 0;margin:0.75rem 0 0.5rem;border-bottom:1px solid var(--border);font-family:'DM Mono',monospace;display:flex;align-items:center;gap:0.5rem;}
+.concepto-row{display:grid;grid-template-columns:1fr 130px 28px;gap:0.5rem;align-items:center;margin-bottom:0.4rem;}
+.del-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:1rem;padding:0;transition:color 0.12s;}
+.del-btn:hover{color:var(--red);}
+.add-btn{font-size:0.75rem;color:var(--text3);cursor:pointer;background:none;border:1px dashed var(--border2);border-radius:var(--radius-sm);padding:0.3rem 0.75rem;margin-top:0.25rem;font-family:inherit;transition:color 0.12s;}
+.add-btn:hover{color:var(--text);}
+.totales-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);}
+.total-card{background:var(--bg3);border-radius:var(--radius-sm);padding:0.75rem 0.9rem;}
+.total-label{font-size:0.72rem;color:var(--text2);margin-bottom:0.25rem;font-family:'DM Mono',monospace;}
+.total-valor{font-size:0.95rem;font-weight:600;font-family:'DM Mono',monospace;}
+.save-btn{width:100%;padding:0.75rem;font-size:0.9rem;font-weight:600;cursor:pointer;border-radius:var(--radius-sm);border:none;margin-top:1rem;font-family:inherit;transition:opacity 0.15s;}
+.save-btn.lucas-btn{background:var(--lucas);color:#fff;}
+.save-btn.karina-btn{background:var(--karina);color:#fff;}
+.save-btn:hover{opacity:0.85;}
+.badge{font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:99px;font-weight:600;font-family:'DM Mono',monospace;white-space:nowrap;}
+.badge-sub{background:rgba(108,138,255,0.15);color:var(--lucas);}
+.badge-nosub{background:rgba(74,222,128,0.15);color:var(--green);}
+.badge-lucas{background:var(--lucas-bg);color:var(--lucas);}
+.badge-karina{background:var(--karina-bg);color:var(--karina);}
+.badge-haber{background:var(--green-bg);color:var(--green);}
+.badge-deduc{background:var(--red-bg);color:var(--red);}
+.hist-item{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:0.75rem;overflow:hidden;}
+.hist-header{display:flex;align-items:center;justify-content:space-between;padding:0.9rem 1.1rem;cursor:pointer;background:var(--bg2);transition:background 0.12s;}
+.hist-header:hover{background:var(--bg3);}
+.hist-detail{padding:1rem 1.1rem;border-top:1px solid var(--border);display:none;}
+.hist-detail.open{display:block;}
+.comp-wrap{overflow-x:auto;}
+.comp-table{width:100%;border-collapse:collapse;font-size:0.8rem;table-layout:fixed;font-family:'DM Mono',monospace;}
+.comp-table th{padding:0.6rem 0.75rem;font-size:0.7rem;color:var(--text3);font-weight:500;border-bottom:1px solid var(--border);text-align:left;background:var(--bg3);}
+.comp-table td{padding:0.55rem 0.75rem;border-bottom:1px solid var(--border);color:var(--text);word-break:break-word;vertical-align:middle;}
+.comp-table tr:last-child td{border-bottom:none;}
+.comp-table tr.subtotal td{background:var(--bg3);font-weight:500;}
+.comp-table tr.row-neto td{background:rgba(108,138,255,0.08);color:var(--lucas);font-weight:600;}
+.ta-r{text-align:right;}
+.delta-pos{color:var(--green);font-weight:600;}
+.delta-neg{color:var(--red);font-weight:600;}
+.delta-zero{color:var(--text3);}
+.delta-new{color:var(--amber);font-style:italic;}
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0.75rem;margin-bottom:1.25rem;}
+.metric-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;}
+.metric-label{font-size:0.72rem;color:var(--text2);margin-bottom:0.35rem;font-family:'DM Mono',monospace;}
+.metric-val{font-size:1.1rem;font-weight:700;font-family:'DM Mono',monospace;}
+.metric-sub{font-size:0.72rem;color:var(--text3);margin-top:0.2rem;font-family:'DM Mono',monospace;}
+.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem;}
+.chart-title{font-size:0.85rem;font-weight:600;margin-bottom:1rem;color:var(--text2);}
+.empty-state{text-align:center;padding:3rem 1rem;color:var(--text3);font-size:0.85rem;}
+.comp-select{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.45rem 0.75rem;font-size:0.83rem;color:var(--text);font-family:inherit;}
+.tab{display:none;}
+.tab.active{display:block;}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-title"><span>Recibos</span> · Lucas & Karina</div>
   <div class="login-cards">
     <div class="login-card lucas" onclick="login('lucas')">
       <div class="login-avatar">LV</div>
-      <div>
-        <div class="login-name" style="color:var(--lucas)">Lucas</div>
-        <div class="login-sub">Vergara</div>
-      </div>
+      <div><div class="login-name" style="color:var(--lucas)">Lucas</div><div class="login-sub">Vergara</div></div>
     </div>
     <div class="login-card karina" onclick="login('karina')">
-      <div class="login-avatar" style="color:var(--karina);background:var(--karina-bg)">KT</div>
-      <div>
-        <div class="login-name" style="color:var(--karina)">Karina</div>
-        <div class="login-sub">Tiripicchio</div>
-      </div>
+      <div class="login-avatar">KT</div>
+      <div><div class="login-name" style="color:var(--karina)">Karina</div><div class="login-sub">Tiripicchio</div></div>
     </div>
   </div>
+  <div class="login-loading" id="login-loading"><div class="spinner"></div> Conectando...</div>
 </div>
 
-<!-- APP -->
 <div id="app">
   <header>
     <div class="header-left">
       <div class="app-title">Recibos</div>
       <div id="user-pill" class="user-pill"></div>
+      <div class="sync-indicator"><div class="sync-dot" id="sync-dot"></div><span id="sync-text">sincronizado</span></div>
     </div>
-    <button class="logout-btn" onclick="logout()"><i class="ti ti-logout"></i> Salir</button>
+    <button class="logout-btn" onclick="doLogout()"><i class="ti ti-logout"></i> Salir</button>
   </header>
   <nav>
     <button class="nav-btn active" onclick="showTab('cargar')" id="nav-cargar"><i class="ti ti-upload"></i> Cargar</button>
@@ -344,219 +165,186 @@ main { padding: 1.5rem; max-width: 860px; margin: 0 auto; }
     <button class="nav-btn" onclick="showTab('analisis')" id="nav-analisis"><i class="ti ti-chart-line"></i> Análisis</button>
   </nav>
   <main>
-    <!-- CARGAR -->
     <div id="tab-cargar" class="tab active">
-      <div class="section-header">
-        <div class="section-title">Cargar recibo</div>
-        <div class="section-sub">Subí el PDF y Claude extrae los datos automáticamente.</div>
-      </div>
+      <div class="section-header"><div class="section-title">Cargar recibo</div><div class="section-sub">Subí el PDF y Claude extrae los datos automáticamente.</div></div>
       <div class="upload-zone" onclick="document.getElementById('file-input').click()">
-        <i class="ti ti-file-upload"></i>
-        <p><strong>Hacé clic para subir</strong> o arrastrá el PDF acá</p>
+        <i class="ti ti-file-upload"></i><p><strong>Hacé clic para subir</strong> o arrastrá el PDF acá</p>
       </div>
       <input type="file" id="file-input" accept=".pdf" style="display:none" onchange="handleFile(this)">
-      <div id="loading-state" style="display:none"><div class="loading-bar"><div class="spinner"></div> Leyendo el PDF con Claude...</div></div>
+      <div id="loading-state" style="display:none"><div class="loading-bar"><div class="spinner"></div> Leyendo con Claude...</div></div>
       <div id="error-state" style="display:none" class="error-box"></div>
       <div id="form-container"></div>
     </div>
-
-    <!-- MIS RECIBOS -->
     <div id="tab-mis" class="tab">
-      <div class="section-header">
-        <div class="section-title">Mis recibos</div>
-        <div class="section-sub" id="mis-sub"></div>
-      </div>
+      <div class="section-header"><div class="section-title">Mis recibos</div><div class="section-sub" id="mis-sub"></div></div>
       <div id="mis-list"></div>
     </div>
-
-    <!-- TODOS -->
     <div id="tab-todos" class="tab">
-      <div class="section-header">
-        <div class="section-title">Todos los recibos</div>
-        <div class="section-sub">Historial combinado de Lucas y Karina.</div>
-      </div>
+      <div class="section-header"><div class="section-title">Todos los recibos</div><div class="section-sub">Historial combinado de Lucas y Karina.</div></div>
       <div id="todos-list"></div>
     </div>
-
-    <!-- COMPARAR -->
     <div id="tab-comparar" class="tab">
-      <div class="section-header">
-        <div class="section-title">Comparar períodos</div>
-        <div class="section-sub">Seleccioná dos meses para ver el detalle concepto por concepto.</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap">
-        <div>
-          <div class="field-label">Usuario</div>
-          <select class="comp-select" id="comp-user" onchange="renderComparacion()">
-            <option value="lucas">Lucas</option>
-            <option value="karina">Karina</option>
-            <option value="ambos">Ambos (combinado)</option>
-          </select>
-        </div>
-        <div>
-          <div class="field-label">Período A</div>
-          <select class="comp-select" id="comp-a" onchange="renderComparacion()"><option value="">—</option></select>
-        </div>
-        <div style="padding-top:1.2rem;color:var(--text3);font-size:0.85rem">vs</div>
-        <div>
-          <div class="field-label">Período B</div>
-          <select class="comp-select" id="comp-b" onchange="renderComparacion()"><option value="">—</option></select>
-        </div>
+      <div class="section-header"><div class="section-title">Comparar períodos</div><div class="section-sub">Concepto por concepto, con variación en $ y %.</div></div>
+      <div style="display:flex;align-items:flex-end;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap">
+        <div><div class="field-label">Usuario</div><select class="comp-select" id="comp-user" onchange="renderComparacionSelects()"><option value="lucas">Lucas</option><option value="karina">Karina</option><option value="ambos">Ambos</option></select></div>
+        <div><div class="field-label">Período A</div><select class="comp-select" id="comp-a" onchange="renderComparacion()"><option value="">—</option></select></div>
+        <div style="padding-bottom:0.5rem;color:var(--text3);font-size:0.85rem">vs</div>
+        <div><div class="field-label">Período B</div><select class="comp-select" id="comp-b" onchange="renderComparacion()"><option value="">—</option></select></div>
       </div>
       <div id="comp-result"></div>
     </div>
-
-    <!-- ANÁLISIS -->
     <div id="tab-analisis" class="tab">
-      <div class="section-header">
-        <div class="section-title">Análisis</div>
-        <div class="section-sub">Evolución del sueldo, horas y neto por hora.</div>
-      </div>
+      <div class="section-header"><div class="section-title">Análisis</div><div class="section-sub">Evolución del neto, horas e ingreso por hora.</div></div>
       <div id="analisis-content"></div>
     </div>
   </main>
 </div>
 
-<script>
-// ── DATOS INICIALES ──
-const INITIAL_LUCAS = [
-  {
-    id:'abr2026-284-lv', usuario:'lucas', mes:'Abril 2026', cargo:'Bibliotecario Secundaria', tipo:'SECUND.SUBV.',
-    recibo:'284', legajo:'28/1', antiguedad:'54%', horas:null,
-    haberes:[
-      {nombre:'Sueldo básico',valor:392179.20},
-      {nombre:'Antigüedad (54%)',valor:211776.77},
-      {nombre:'Bonif. remunerativa (45.5)',valor:132599.00},
-      {nombre:'Bonificación no jerárquica (66.7)',valor:138896.80},
-      {nombre:'Bonificación x índice (45.1)',valor:243477.92},
-      {nombre:'Conectividad nacional (257.5)',valor:28700.00}
-    ],
-    deducciones:[
-      {nombre:'IPS (16%)',valor:-179028.75},
-      {nombre:'Caja complementaria (4.5%)',valor:-50351.84},
-      {nombre:'Obra social (3%)',valor:-33567.89},
-      {nombre:'Sindicato SADOP (2%)',valor:-22378.59}
-    ],
-    totalHaberes:1147629.69, totalDeduc:-285327.07, neto:862302.62
-  },
-  {
-    id:'abr2026-285-lv', usuario:'lucas', mes:'Abril 2026', cargo:'Extensión horaria', tipo:'SEC. NO SUBV.',
-    recibo:'285', legajo:'28/5', antiguedad:'54%', horas:15,
-    haberes:[
-      {nombre:'Sueldo básico (15hs)',valor:261452.64},
-      {nombre:'Antigüedad (54%)',valor:141184.43},
-      {nombre:'Bonif. remunerativa (45.5)',valor:88399.33},
-      {nombre:'Bonificación no jerárquica (66.7)',valor:92597.87},
-      {nombre:'Bonificación x índice (45.1)',valor:162318.61}
-    ],
-    deducciones:[
-      {nombre:'IPS (16%)',valor:-119352.46},
-      {nombre:'Obra social (3%)',valor:-22378.59},
-      {nombre:'Sindicato SADOP (2%)',valor:-14919.06}
-    ],
-    totalHaberes:745952.88, totalDeduc:-156650.11, neto:589302.77
-  }
-];
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+import { getDatabase, ref, set, onValue, remove } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-database.js";
 
-const KEY_LUCAS = 'recibos_lucas_v1';
-const KEY_KARINA = 'recibos_karina_v1';
+const firebaseConfig = {
+  apiKey: "AIzaSyCpmhcgdH7LDY9Ac2Jn7RZIv5_Yb_rFges",
+  authDomain: "recibos-lk.firebaseapp.com",
+  projectId: "recibos-lk",
+  storageBucket: "recibos-lk.firebasestorage.app",
+  messagingSenderId: "513868375512",
+  appId: "1:513868375512:web:7822669d34a40640e23ead",
+  databaseURL: "https://recibos-lk-default-rtdb.firebaseio.com"
+};
+
+const fbApp = initializeApp(firebaseConfig);
+const db = getDatabase(fbApp);
+
 let currentUser = null;
-
-function getKey(u) { return u==='lucas' ? KEY_LUCAS : KEY_KARINA; }
-function getRecibos(u) {
-  try { return JSON.parse(localStorage.getItem(getKey(u)) || '[]'); } catch { return []; }
-}
-function saveRecibos(u, arr) { localStorage.setItem(getKey(u), JSON.stringify(arr)); }
-function getAllRecibos() {
-  return [...getRecibos('lucas').map(r=>({...r,usuario:'lucas'})), ...getRecibos('karina').map(r=>({...r,usuario:'karina'}))];
-}
-
-function init() {
-  if (!getRecibos('lucas').length) saveRecibos('lucas', INITIAL_LUCAS);
-}
-
-// ── LOGIN ──
-function login(user) {
-  currentUser = user;
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  const pill = document.getElementById('user-pill');
-  pill.className = 'user-pill ' + user;
-  pill.textContent = user === 'lucas' ? 'Lucas V.' : 'Karina T.';
-  document.getElementById('mis-sub').textContent = `Recibos de ${user==='lucas'?'Lucas Vergara':'Karina Tiripicchio'}.`;
-  showTab('cargar');
-}
-function logout() {
-  currentUser = null;
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('login-screen').style.display = 'flex';
-}
-
-// ── NAV ──
-function showTab(t) {
-  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-  document.getElementById('tab-'+t).classList.add('active');
-  document.getElementById('nav-'+t).classList.add('active');
-  if (t==='mis') renderMis();
-  if (t==='todos') renderTodos();
-  if (t==='comparar') renderComparacionSelects();
-  if (t==='analisis') renderAnalisis();
-}
-
-// ── UPLOAD ──
-function handleFile(input) {
-  const file = input.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = async e => {
-    const b64 = e.target.result.split(',')[1];
-    document.getElementById('loading-state').style.display = 'block';
-    document.getElementById('error-state').style.display = 'none';
-    document.getElementById('form-container').innerHTML = '';
-    try {
-      const resp = await fetch('https://api.anthropic.com/v1/messages', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({
-          model:'claude-sonnet-4-20250514', max_tokens:1000,
-          messages:[{role:'user', content:[
-            {type:'document', source:{type:'base64', media_type:'application/pdf', data:b64}},
-            {type:'text', text:`Extraé los datos del recibo de sueldo. Respondé SOLO con JSON válido, sin markdown ni texto extra:
-{"mes":"Mes Año","cargo":"nombre del cargo","tipo":"tipo sección","recibo":"número","legajo":"número","antiguedad":"porcentaje de antigüedad","horas":número o null,
-"haberes":[{"nombre":"concepto","valor":número}],
-"deducciones":[{"nombre":"concepto","valor":número negativo}],
-"totalHaberes":número,"totalDeduc":número negativo,"neto":número}`}
-          ]}]
-        })
-      });
-      const data = await resp.json();
-      const text = data.content.map(c=>c.text||'').join('');
-      const parsed = JSON.parse(text.replace(/```json|```/g,'').trim());
-      parsed.id = 'r-'+Date.now();
-      parsed.usuario = currentUser;
-      document.getElementById('loading-state').style.display = 'none';
-      renderForm(parsed);
-    } catch {
-      document.getElementById('loading-state').style.display = 'none';
-      document.getElementById('error-state').style.display = 'block';
-      document.getElementById('error-state').textContent = 'No se pudo leer el PDF. Intentá de nuevo.';
-    }
-  };
-  reader.readAsDataURL(file);
-  input.value = '';
-}
-
+let cachedData = { lucas:{}, karina:{} };
+let listeners = [];
+let chartInstances = {};
+let editingKey = null;
 let currentData = null;
 
-function renderForm(d) {
-  currentData = JSON.parse(JSON.stringify(d));
-  const uc = currentUser;
-  document.getElementById('form-container').innerHTML = `
+const INITIAL_LUCAS = [
+  { usuario:'lucas', mes:'Abril 2026', cargo:'Bibliotecario Secundaria', tipo:'SECUND.SUBV.', recibo:'284', legajo:'28/1', antiguedad:'54%', horas:null,
+    haberes:[{nombre:'Sueldo básico',valor:392179.20},{nombre:'Antigüedad (54%)',valor:211776.77},{nombre:'Bonif. remunerativa (45.5)',valor:132599.00},{nombre:'Bonificación no jerárquica (66.7)',valor:138896.80},{nombre:'Bonificación x índice (45.1)',valor:243477.92},{nombre:'Conectividad nacional (257.5)',valor:28700.00}],
+    deducciones:[{nombre:'IPS (16%)',valor:-179028.75},{nombre:'Caja complementaria (4.5%)',valor:-50351.84},{nombre:'Obra social (3%)',valor:-33567.89},{nombre:'Sindicato SADOP (2%)',valor:-22378.59}],
+    totalHaberes:1147629.69, totalDeduc:-285327.07, neto:862302.62 },
+  { usuario:'lucas', mes:'Abril 2026', cargo:'Extensión horaria', tipo:'SEC. NO SUBV.', recibo:'285', legajo:'28/5', antiguedad:'54%', horas:15,
+    haberes:[{nombre:'Sueldo básico (15hs)',valor:261452.64},{nombre:'Antigüedad (54%)',valor:141184.43},{nombre:'Bonif. remunerativa (45.5)',valor:88399.33},{nombre:'Bonificación no jerárquica (66.7)',valor:92597.87},{nombre:'Bonificación x índice (45.1)',valor:162318.61}],
+    deducciones:[{nombre:'IPS (16%)',valor:-119352.46},{nombre:'Obra social (3%)',valor:-22378.59},{nombre:'Sindicato SADOP (2%)',valor:-14919.06}],
+    totalHaberes:745952.88, totalDeduc:-156650.11, neto:589302.77 }
+];
+
+// ── helpers ──
+const fmt = n => '$'+(parseFloat(n)||0).toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const tipoBadge = d => d&&d.tipo&&d.tipo.includes('SUBV')&&!d.tipo.includes('NO') ? 'badge-sub' : 'badge-nosub';
+const setSyncing = () => { document.getElementById('sync-dot').classList.add('syncing'); document.getElementById('sync-text').textContent='guardando...'; };
+const setSynced  = () => { document.getElementById('sync-dot').classList.remove('syncing'); document.getElementById('sync-text').textContent='sincronizado'; };
+const mkKey = () => Date.now()+'_'+Math.random().toString(36).slice(2,7);
+const getArr = u => Object.entries(cachedData[u]||{}).map(([k,v])=>({...v,_key:k}));
+const getAll = () => [...getArr('lucas').map(r=>({...r,usuario:'lucas'})),...getArr('karina').map(r=>({...r,usuario:'karina'}))];
+
+function fmtDelta(diff,valA){
+  if(Math.abs(diff)<0.01) return '<span class="delta-zero">Sin cambio</span>';
+  const pct=valA!==0?((diff/Math.abs(valA))*100).toFixed(1):'—';
+  const cls=diff>0?'delta-pos':'delta-neg', sign=diff>0?'+':'';
+  return `<span class="${cls}">${sign}${fmt(diff)}<br><small style="font-weight:400;font-size:0.7rem">${sign}${pct}%</small></span>`;
+}
+
+// ── login / logout ──
+window.login = async function(user){
+  document.getElementById('login-loading').classList.add('show');
+  currentUser = user;
+  unsubAll();
+  ['lucas','karina'].forEach(u=>{
+    const unsub = onValue(ref(db,`recibos/${u}`), snap=>{
+      cachedData[u] = snap.val()||{};
+      setSynced();
+      refreshTab();
+    });
+    listeners.push(unsub);
+  });
+  // seed inicial para lucas si está vacío
+  onValue(ref(db,'recibos/lucas'), async snap=>{
+    if(!snap.val()){
+      for(const r of INITIAL_LUCAS){ await set(ref(db,`recibos/lucas/${mkKey()}`),r); }
+    }
+  },{onlyOnce:true});
+  document.getElementById('login-loading').classList.remove('show');
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+  const pill=document.getElementById('user-pill');
+  pill.className='user-pill '+user;
+  pill.textContent=user==='lucas'?'Lucas V.':'Karina T.';
+  document.getElementById('mis-sub').textContent=`Recibos de ${user==='lucas'?'Lucas Vergara':'Karina Tiripicchio'}.`;
+  showTab('cargar');
+};
+
+window.doLogout = function(){
+  unsubAll(); currentUser=null; cachedData={lucas:{},karina:{}};
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+};
+function unsubAll(){ listeners.forEach(u=>u()); listeners=[]; }
+
+// ── nav ──
+window.showTab = function(t){
+  document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(el=>el.classList.remove('active'));
+  document.getElementById('tab-'+t).classList.add('active');
+  document.getElementById('nav-'+t).classList.add('active');
+  if(t==='mis') renderMis();
+  if(t==='todos') renderTodos();
+  if(t==='comparar') renderComparacionSelects();
+  if(t==='analisis') renderAnalisis();
+};
+function refreshTab(){
+  const active=document.querySelector('.tab.active'); if(!active) return;
+  const id=active.id.replace('tab-','');
+  if(id==='mis') renderMis();
+  if(id==='todos') renderTodos();
+  if(id==='comparar') renderComparacion();
+  if(id==='analisis') renderAnalisis();
+}
+
+// ── upload / claude ──
+window.handleFile = function(input){
+  const file=input.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=async e=>{
+    const b64=e.target.result.split(',')[1];
+    document.getElementById('loading-state').style.display='block';
+    document.getElementById('error-state').style.display='none';
+    document.getElementById('form-container').innerHTML='';
+    try{
+      const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:[
+          {type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}},
+          {type:'text',text:`Extraé los datos del recibo. Solo JSON válido, sin markdown:\n{"mes":"Mes Año","cargo":"nombre","tipo":"tipo sección","recibo":"número","legajo":"número","antiguedad":"porcentaje","horas":número o null,"haberes":[{"nombre":"concepto","valor":número}],"deducciones":[{"nombre":"concepto","valor":número negativo}],"totalHaberes":número,"totalDeduc":número negativo,"neto":número}`}
+        ]}]})
+      });
+      const data=await resp.json();
+      const text=data.content.map(c=>c.text||'').join('');
+      const parsed=JSON.parse(text.replace(/```json|```/g,'').trim());
+      parsed.usuario=currentUser;
+      document.getElementById('loading-state').style.display='none';
+      renderForm(parsed,null);
+    }catch{
+      document.getElementById('loading-state').style.display='none';
+      document.getElementById('error-state').style.display='block';
+      document.getElementById('error-state').textContent='No se pudo leer el PDF. Intentá de nuevo.';
+    }
+  };
+  reader.readAsDataURL(file); input.value='';
+};
+
+// ── form ──
+function renderForm(d,key){
+  currentData=JSON.parse(JSON.stringify(d)); editingKey=key||null;
+  document.getElementById('form-container').innerHTML=`
     <div class="card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-        <div>
-          <div style="font-size:1rem;font-weight:700;margin-bottom:0.35rem">${d.cargo||'Cargo'}</div>
-          <span class="badge ${d.tipo&&d.tipo.includes('SUBV')&&!d.tipo.includes('NO')?'badge-sub':'badge-nosub'}">${d.tipo||''}</span>
-        </div>
+        <div><div style="font-size:1rem;font-weight:700;margin-bottom:0.35rem">${d.cargo||'Cargo'}</div><span class="badge ${tipoBadge(d)}">${d.tipo||''}</span></div>
         <div style="font-size:0.75rem;color:var(--text3);font-family:'DM Mono',monospace">N° ${d.recibo||''}</div>
       </div>
       <div class="field-row">
@@ -568,186 +356,153 @@ function renderForm(d) {
         <div><div class="field-label">Horas (opcional)</div><input class="field-input" id="f-horas" type="number" value="${d.horas||''}" placeholder="ej: 15"></div>
       </div>
       <div class="divider-label"><span class="badge badge-haber">Haberes</span></div>
-      <div id="haberes-list">${d.haberes.map((h,i)=>cRow(h,i,'h')).join('')}</div>
+      <div id="haberes-list">${(d.haberes||[]).map((h,i)=>cRow(h,i,'h')).join('')}</div>
       <button class="add-btn" onclick="addC('h')"><i class="ti ti-plus"></i> Agregar haber</button>
       <div class="divider-label" style="margin-top:0.75rem"><span class="badge badge-deduc">Deducciones</span></div>
-      <div id="deduc-list">${d.deducciones.map((h,i)=>cRow(h,i,'d')).join('')}</div>
+      <div id="deduc-list">${(d.deducciones||[]).map((h,i)=>cRow(h,i,'d')).join('')}</div>
       <button class="add-btn" onclick="addC('d')"><i class="ti ti-plus"></i> Agregar deducción</button>
       <div class="totales-grid">
         <div class="total-card"><div class="total-label">Total haberes</div><div class="total-valor" id="t-hab">${fmt(d.totalHaberes)}</div></div>
         <div class="total-card"><div class="total-label">Total deduc.</div><div class="total-valor" style="color:var(--red)" id="t-ded">${fmt(d.totalDeduc)}</div></div>
         <div class="total-card" style="background:rgba(108,138,255,0.08);border-color:rgba(108,138,255,0.2)"><div class="total-label">Neto a cobrar</div><div class="total-valor" style="color:var(--lucas)" id="t-net">${fmt(d.neto)}</div></div>
       </div>
-      <button class="save-btn ${uc}-btn" onclick="guardar()"><i class="ti ti-device-floppy"></i> Guardar recibo</button>
+      <button class="save-btn ${currentUser}-btn" onclick="guardar()"><i class="ti ti-device-floppy"></i> Guardar en Firebase</button>
     </div>`;
 }
 
-function cRow(h, i, tipo) {
-  return `<div class="concepto-row" id="crow-${tipo}-${i}">
+function cRow(h,i,tipo){
+  return `<div class="concepto-row">
     <input class="field-input" style="font-size:0.8rem" value="${h.nombre}" onchange="updC('${tipo}',${i},'nombre',this.value)">
     <input class="field-input" style="font-size:0.8rem;text-align:right;font-family:'DM Mono',monospace" value="${h.valor}" onchange="updC('${tipo}',${i},'valor',this.value)" onblur="recalc()">
     <button class="del-btn" onclick="delC('${tipo}',${i})"><i class="ti ti-x"></i></button>
   </div>`;
 }
-function updC(tipo, i, campo, val) {
-  const arr = tipo==='h' ? currentData.haberes : currentData.deducciones;
-  if (campo==='valor') arr[i].valor = parseFloat(val)||0; else arr[i].nombre = val;
-}
-function addC(tipo) {
-  if (!currentData) return;
-  const arr = tipo==='h' ? currentData.haberes : currentData.deducciones;
-  const i = arr.length; arr.push({nombre:'',valor:0});
-  const container = document.getElementById(tipo==='h'?'haberes-list':'deduc-list');
-  const div = document.createElement('div');
-  div.innerHTML = cRow(arr[i], i, tipo);
-  container.appendChild(div.firstElementChild);
-}
-function delC(tipo, i) {
-  const arr = tipo==='h' ? currentData.haberes : currentData.deducciones;
-  arr.splice(i,1);
-  document.getElementById(tipo==='h'?'haberes-list':'deduc-list').innerHTML = arr.map((h,j)=>cRow(h,j,tipo)).join('');
-  recalc();
-}
-function recalc() {
-  if (!currentData) return;
-  const sumH = currentData.haberes.reduce((a,x)=>a+(parseFloat(x.valor)||0),0);
-  const sumD = currentData.deducciones.reduce((a,x)=>a+(parseFloat(x.valor)||0),0);
+
+window.updC=(tipo,i,campo,val)=>{ const a=tipo==='h'?currentData.haberes:currentData.deducciones; if(campo==='valor') a[i].valor=parseFloat(val)||0; else a[i].nombre=val; };
+window.addC=tipo=>{ if(!currentData) return; const a=tipo==='h'?currentData.haberes:currentData.deducciones; const i=a.length; a.push({nombre:'',valor:0}); const c=document.getElementById(tipo==='h'?'haberes-list':'deduc-list'); const d=document.createElement('div'); d.innerHTML=cRow(a[i],i,tipo); c.appendChild(d.firstElementChild); };
+window.delC=(tipo,i)=>{ const a=tipo==='h'?currentData.haberes:currentData.deducciones; a.splice(i,1); document.getElementById(tipo==='h'?'haberes-list':'deduc-list').innerHTML=a.map((h,j)=>cRow(h,j,tipo)).join(''); recalc(); };
+
+function recalc(){
+  if(!currentData) return;
+  const sumH=currentData.haberes.reduce((a,x)=>a+(parseFloat(x.valor)||0),0);
+  const sumD=currentData.deducciones.reduce((a,x)=>a+(parseFloat(x.valor)||0),0);
   currentData.totalHaberes=sumH; currentData.totalDeduc=sumD; currentData.neto=sumH+sumD;
-  if (document.getElementById('t-hab')) {
-    document.getElementById('t-hab').textContent=fmt(sumH);
-    document.getElementById('t-ded').textContent=fmt(sumD);
-    document.getElementById('t-net').textContent=fmt(sumH+sumD);
+  if(document.getElementById('t-hab')){ document.getElementById('t-hab').textContent=fmt(sumH); document.getElementById('t-ded').textContent=fmt(sumD); document.getElementById('t-net').textContent=fmt(sumH+sumD); }
+}
+
+window.guardar=async function(){
+  if(!currentData) return;
+  currentData.mes=document.getElementById('f-mes').value;
+  currentData.cargo=document.getElementById('f-cargo').value;
+  currentData.recibo=document.getElementById('f-recibo').value;
+  currentData.horas=parseFloat(document.getElementById('f-horas').value)||null;
+  currentData.usuario=currentUser;
+  recalc(); setSyncing();
+  try{
+    const k=editingKey||mkKey();
+    await set(ref(db,`recibos/${currentUser}/${k}`),currentData);
+    document.getElementById('form-container').innerHTML='<div class="success-box"><i class="ti ti-circle-check"></i> Recibo guardado en Firebase.</div>';
+    currentData=null; editingKey=null;
+  }catch(e){
+    document.getElementById('error-state').style.display='block';
+    document.getElementById('error-state').textContent='Error al guardar: '+e.message;
   }
-}
-function guardar() {
-  if (!currentData) return;
-  currentData.mes = document.getElementById('f-mes').value;
-  currentData.cargo = document.getElementById('f-cargo').value;
-  currentData.recibo = document.getElementById('f-recibo').value;
-  currentData.horas = parseFloat(document.getElementById('f-horas').value)||null;
-  recalc();
-  const todos = getRecibos(currentUser);
-  const idx = todos.findIndex(r=>r.id===currentData.id);
-  if (idx>=0) todos[idx]=currentData; else todos.push(currentData);
-  saveRecibos(currentUser, todos);
-  document.getElementById('form-container').innerHTML = `<div class="success-box"><i class="ti ti-circle-check"></i> Recibo guardado correctamente.</div>`;
-  currentData = null;
-}
+};
 
-// ── MIS RECIBOS ──
-function renderMis() {
-  const todos = getRecibos(currentUser);
-  renderHistorial(document.getElementById('mis-list'), todos, false);
-}
+// ── historial ──
+function renderMis(){ renderHistorial(document.getElementById('mis-list'),getArr(currentUser).map(r=>({...r,usuario:currentUser})),false); }
+function renderTodos(){ renderHistorial(document.getElementById('todos-list'),getAll(),true); }
 
-// ── TODOS ──
-function renderTodos() {
-  const todos = getAllRecibos();
-  renderHistorial(document.getElementById('todos-list'), todos, true);
-}
-
-function renderHistorial(el, recibos, showUser) {
-  if (!recibos.length) { el.innerHTML = '<div class="empty-state">No hay recibos cargados todavía.</div>'; return; }
-  const agrupados = {};
-  recibos.forEach(r => { if (!agrupados[r.mes]) agrupados[r.mes]=[]; agrupados[r.mes].push(r); });
-  el.innerHTML = Object.entries(agrupados).sort((a,b)=>a[0].localeCompare(b[0])).map(([mes, list]) => {
-    const netoTotal = list.reduce((a,r)=>a+r.neto,0);
-    const detalles = list.map(r => {
-      const ub = showUser ? `<span class="badge badge-${r.usuario||currentUser}" style="margin-left:6px">${r.usuario==='lucas'?'Lucas':'Karina'}</span>` : '';
-      const habRows = r.haberes.map(h=>`<tr><td style="padding:4px 8px;font-size:0.75rem;color:var(--text2)">${h.nombre}</td><td style="padding:4px 8px;font-size:0.75rem;text-align:right;font-family:'DM Mono',monospace">${fmt(h.valor)}</td></tr>`).join('');
-      const dedRows = r.deducciones.map(d=>`<tr><td style="padding:4px 8px;font-size:0.75rem;color:var(--text2)">${d.nombre}</td><td style="padding:4px 8px;font-size:0.75rem;text-align:right;color:var(--red);font-family:'DM Mono',monospace">${fmt(d.valor)}</td></tr>`).join('');
+function renderHistorial(el,recibos,showUser){
+  if(!recibos.length){el.innerHTML='<div class="empty-state">No hay recibos cargados todavía.</div>';return;}
+  const ag={};
+  recibos.forEach(r=>{if(!ag[r.mes])ag[r.mes]=[];ag[r.mes].push(r);});
+  el.innerHTML=Object.entries(ag).sort((a,b)=>a[0].localeCompare(b[0])).map(([mes,list])=>{
+    const netoTotal=list.reduce((a,r)=>a+r.neto,0);
+    const detalles=list.map(r=>{
+      const ub=showUser?`<span class="badge badge-${r.usuario}">${r.usuario==='lucas'?'Lucas':'Karina'}</span>`:'';
+      const canEdit=r.usuario===currentUser;
+      const habRows=(r.haberes||[]).map(h=>`<tr><td style="padding:4px 8px;font-size:0.75rem;color:var(--text2)">${h.nombre}</td><td style="padding:4px 8px;font-size:0.75rem;text-align:right;font-family:'DM Mono',monospace">${fmt(h.valor)}</td></tr>`).join('');
+      const dedRows=(r.deducciones||[]).map(d=>`<tr><td style="padding:4px 8px;font-size:0.75rem;color:var(--text2)">${d.nombre}</td><td style="padding:4px 8px;font-size:0.75rem;text-align:right;color:var(--red);font-family:'DM Mono',monospace">${fmt(d.valor)}</td></tr>`).join('');
       return `<div style="margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--border)">
-        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.6rem;flex-wrap:wrap">
-          <span style="font-size:0.85rem;font-weight:600">${r.cargo}</span>
-          <span class="badge ${r.tipo&&r.tipo.includes('SUBV')&&!r.tipo.includes('NO')?'badge-sub':'badge-nosub'}">${r.tipo||''}</span>
-          ${ub}
-          ${r.horas?`<span style="font-size:0.72rem;color:var(--text3);font-family:'DM Mono',monospace">${r.horas}hs</span>`:''}
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.6rem;gap:0.4rem;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap">
+            <span style="font-size:0.85rem;font-weight:600">${r.cargo}</span>
+            <span class="badge ${tipoBadge(r)}">${r.tipo||''}</span>${ub}
+            ${r.horas?`<span style="font-size:0.72rem;color:var(--text3);font-family:'DM Mono',monospace">${r.horas}hs</span>`:''}
+          </div>
+          ${canEdit?`<div style="display:flex;gap:0.4rem">
+            <button onclick="editarRecibo('${r.usuario}','${r._key}')" style="font-size:0.72rem;color:var(--text3);background:none;border:1px solid var(--border);border-radius:6px;padding:3px 8px;cursor:pointer;font-family:inherit"><i class="ti ti-edit"></i></button>
+            <button onclick="eliminarRecibo('${r.usuario}','${r._key}')" style="font-size:0.72rem;color:var(--red);background:none;border:1px solid var(--border);border-radius:6px;padding:3px 8px;cursor:pointer;font-family:inherit"><i class="ti ti-trash"></i></button>
+          </div>`:''}
         </div>
         <table style="width:100%;border-collapse:collapse">
           <tr style="background:var(--bg3)"><td colspan="2" style="padding:3px 8px;font-size:0.68rem;color:var(--text3);text-transform:uppercase;letter-spacing:.06em">Haberes</td></tr>
           ${habRows}
           <tr style="background:var(--bg3)"><td colspan="2" style="padding:3px 8px;font-size:0.68rem;color:var(--text3);text-transform:uppercase;letter-spacing:.06em">Deducciones</td></tr>
           ${dedRows}
-          <tr style="background:rgba(108,138,255,0.08)">
-            <td style="padding:6px 8px;font-size:0.82rem;font-weight:600;color:var(--lucas)">Neto</td>
-            <td style="padding:6px 8px;font-size:0.82rem;font-weight:600;text-align:right;color:var(--lucas);font-family:'DM Mono',monospace">${fmt(r.neto)}</td>
-          </tr>
+          <tr style="background:rgba(108,138,255,0.08)"><td style="padding:6px 8px;font-size:0.82rem;font-weight:600;color:var(--lucas)">Neto</td><td style="padding:6px 8px;font-size:0.82rem;font-weight:600;text-align:right;color:var(--lucas);font-family:'DM Mono',monospace">${fmt(r.neto)}</td></tr>
         </table>
       </div>`;
     }).join('');
     return `<div class="hist-item">
       <div class="hist-header" onclick="this.nextElementSibling.classList.toggle('open')">
         <span style="font-size:0.9rem;font-weight:600">${mes} <span style="font-size:0.75rem;color:var(--text3);font-weight:400">(${list.length} recibo${list.length>1?'s':''})</span></span>
-        <span style="font-size:0.82rem;font-weight:600;color:var(--green);font-family:'DM Mono',monospace">Neto total: ${fmt(netoTotal)}</span>
+        <span style="font-size:0.82rem;font-weight:600;color:var(--green);font-family:'DM Mono',monospace">Total: ${fmt(netoTotal)}</span>
       </div>
       <div class="hist-detail">${detalles}</div>
     </div>`;
   }).join('');
 }
 
-// ── COMPARAR ──
-function renderComparacionSelects() {
-  const u = document.getElementById('comp-user').value || 'lucas';
-  let recibos;
-  if (u==='ambos') recibos = getAllRecibos();
-  else recibos = getRecibos(u);
-  const meses = [...new Set(recibos.map(r=>r.mes))].sort();
-  ['comp-a','comp-b'].forEach(id => {
-    const sel = document.getElementById(id), val = sel.value;
-    sel.innerHTML = '<option value="">—</option>' + meses.map(m=>`<option value="${m}" ${m===val?'selected':''}>${m}</option>`).join('');
-  });
-  renderComparacion();
-}
+window.editarRecibo=function(user,key){ const r=cachedData[user][key]; if(!r) return; showTab('cargar'); renderForm({...r},key); };
+window.eliminarRecibo=async function(user,key){ if(!confirm('¿Eliminar este recibo?')) return; setSyncing(); await remove(ref(db,`recibos/${user}/${key}`)); };
 
-function renderComparacion() {
-  const u = document.getElementById('comp-user').value || 'lucas';
-  const a = document.getElementById('comp-a').value;
-  const b = document.getElementById('comp-b').value;
-  const el = document.getElementById('comp-result');
-  if (!a||!b||a===b) { el.innerHTML = '<div class="empty-state">Seleccioná dos períodos distintos.</div>'; return; }
-  let recibos;
-  if (u==='ambos') recibos = getAllRecibos();
-  else recibos = getRecibos(u);
-  const recA = recibos.filter(r=>r.mes===a);
-  const recB = recibos.filter(r=>r.mes===b);
-  if (!recA.length||!recB.length) { el.innerHTML = '<div class="empty-state">Faltan datos de uno de los períodos.</div>'; return; }
-  const netA = recA.reduce((s,r)=>s+r.neto,0);
-  const netB = recB.reduce((s,r)=>s+r.neto,0);
-  const cargoIds = [...new Set([...recA.map(r=>r.cargo),...recB.map(r=>r.cargo)])];
-  const cargoBlocks = cargoIds.map(cargo => {
-    const rA = recA.find(r=>r.cargo===cargo);
-    const rB = recB.find(r=>r.cargo===cargo);
-    const allH = [...new Set([...(rA?rA.haberes.map(h=>h.nombre):[]),...(rB?rB.haberes.map(h=>h.nombre):[])])];
-    const allD = [...new Set([...(rA?rA.deducciones.map(d=>d.nombre):[]),...(rB?rB.deducciones.map(d=>d.nombre):[])])];
-    const makeRow = (nombre, arrA, arrB) => {
-      const va = arrA?(arrA.find(x=>x.nombre===nombre)||{valor:null}).valor:null;
-      const vb = arrB?(arrB.find(x=>x.nombre===nombre)||{valor:null}).valor:null;
-      let dHtml;
-      if (va===null) dHtml=`<span class="delta-new">nuevo</span>`;
-      else if (vb===null) dHtml=`<span class="delta-zero">eliminado</span>`;
-      else dHtml = fmtDelta(vb-va,va);
-      return `<tr><td style="padding:6px 8px;font-size:0.78rem">${nombre}</td>
-        <td class="ta-r" style="padding:6px 8px;font-size:0.78rem">${va!==null?fmt(va):'—'}</td>
-        <td class="ta-r" style="padding:6px 8px;font-size:0.78rem">${vb!==null?fmt(vb):'—'}</td>
-        <td class="ta-r" style="padding:6px 8px;font-size:0.78rem">${dHtml}</td></tr>`;
+// ── comparar ──
+window.renderComparacionSelects=function(){
+  const u=document.getElementById('comp-user').value;
+  const recibos=u==='ambos'?getAll():getArr(u).map(r=>({...r,usuario:u}));
+  const meses=[...new Set(recibos.map(r=>r.mes))].sort();
+  ['comp-a','comp-b'].forEach(id=>{ const sel=document.getElementById(id),val=sel.value; sel.innerHTML='<option value="">—</option>'+meses.map(m=>`<option value="${m}" ${m===val?'selected':''}>${m}</option>`).join(''); });
+  renderComparacion();
+};
+
+window.renderComparacion=function(){
+  const u=document.getElementById('comp-user').value;
+  const a=document.getElementById('comp-a').value, b=document.getElementById('comp-b').value;
+  const el=document.getElementById('comp-result');
+  if(!a||!b||a===b){el.innerHTML='<div class="empty-state">Seleccioná dos períodos distintos.</div>';return;}
+  const recibos=u==='ambos'?getAll():getArr(u).map(r=>({...r,usuario:u}));
+  const recA=recibos.filter(r=>r.mes===a), recB=recibos.filter(r=>r.mes===b);
+  if(!recA.length||!recB.length){el.innerHTML='<div class="empty-state">Faltan datos de uno de los períodos.</div>';return;}
+  const netA=recA.reduce((s,r)=>s+r.neto,0), netB=recB.reduce((s,r)=>s+r.neto,0);
+  const cargoIds=[...new Set([...recA.map(r=>r.cargo),...recB.map(r=>r.cargo)])];
+  const cargoBlocks=cargoIds.map(cargo=>{
+    const rA=recA.find(r=>r.cargo===cargo), rB=recB.find(r=>r.cargo===cargo);
+    const allH=[...new Set([...(rA?(rA.haberes||[]).map(h=>h.nombre):[]),...(rB?(rB.haberes||[]).map(h=>h.nombre):[])])];
+    const allD=[...new Set([...(rA?(rA.deducciones||[]).map(d=>d.nombre):[]),...(rB?(rB.deducciones||[]).map(d=>d.nombre):[])])];
+    const makeRow=(nombre,arrA,arrB)=>{
+      const va=arrA?(arrA.find(x=>x.nombre===nombre)||{valor:null}).valor:null;
+      const vb=arrB?(arrB.find(x=>x.nombre===nombre)||{valor:null}).valor:null;
+      let dHtml; if(va===null) dHtml='<span class="delta-new">nuevo</span>'; else if(vb===null) dHtml='<span class="delta-zero">eliminado</span>'; else dHtml=fmtDelta(vb-va,va);
+      return `<tr><td style="padding:6px 8px;font-size:0.78rem">${nombre}</td><td class="ta-r" style="padding:6px 8px;font-size:0.78rem">${va!==null?fmt(va):'—'}</td><td class="ta-r" style="padding:6px 8px;font-size:0.78rem">${vb!==null?fmt(vb):'—'}</td><td class="ta-r" style="padding:6px 8px;font-size:0.78rem">${dHtml}</td></tr>`;
     };
-    const habSubA=rA?rA.totalHaberes:null, habSubB=rB?rB.totalHaberes:null;
-    const dedSubA=rA?rA.totalDeduc:null, dedSubB=rB?rB.totalDeduc:null;
-    const netoA=rA?rA.neto:null, netoB=rB?rB.neto:null;
-    const tipoBadge = rA?.tipo&&rA.tipo.includes('SUBV')&&!rA.tipo.includes('NO')?'badge-sub':'badge-nosub';
-    const userBadge = u==='ambos'&&(rA||rB) ? `<span class="badge badge-${(rA||rB).usuario||'lucas'}">${(rA||rB).usuario==='lucas'?'Lucas':'Karina'}</span>` : '';
+    const habSubA=rA?rA.totalHaberes:null,habSubB=rB?rB.totalHaberes:null;
+    const dedSubA=rA?rA.totalDeduc:null,dedSubB=rB?rB.totalDeduc:null;
+    const netoA=rA?rA.neto:null,netoB=rB?rB.neto:null;
+    const ub=u==='ambos'&&(rA||rB)?`<span class="badge badge-${(rA||rB).usuario}">${(rA||rB).usuario==='lucas'?'Lucas':'Karina'}</span>`:'';
     return `<div style="margin-bottom:1.25rem">
       <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.6rem;flex-wrap:wrap">
-        <span class="badge ${tipoBadge}">${rA?.tipo||rB?.tipo||''}</span>
-        <span style="font-size:0.88rem;font-weight:600">${cargo}</span>${userBadge}
+        <span class="badge ${tipoBadge(rA||rB||{})}">${rA?.tipo||rB?.tipo||''}</span>
+        <span style="font-size:0.88rem;font-weight:600">${cargo}</span>${ub}
       </div>
       <div class="comp-wrap"><table class="comp-table">
         <thead><tr><th style="width:38%">Concepto</th><th class="ta-r" style="width:20%">${a}</th><th class="ta-r" style="width:20%">${b}</th><th class="ta-r" style="width:22%">Variación</th></tr></thead>
         <tbody>
-          <tr style="background:var(--bg3)"><td colspan="4" style="padding:4px 8px;font-size:0.68rem;color:var(--text3);text-transform:uppercase;letter-spacing:.06em"><span class="badge badge-haber">Haberes</span></td></tr>
+          <tr style="background:var(--bg3)"><td colspan="4" style="padding:4px 8px;font-size:0.68rem;color:var(--text3)"><span class="badge badge-haber">Haberes</span></td></tr>
           ${allH.map(n=>makeRow(n,rA?.haberes,rB?.haberes)).join('')}
           <tr class="subtotal"><td style="padding:6px 8px">Subtotal haberes</td><td class="ta-r" style="padding:6px 8px">${habSubA!==null?fmt(habSubA):'—'}</td><td class="ta-r" style="padding:6px 8px">${habSubB!==null?fmt(habSubB):'—'}</td><td class="ta-r" style="padding:6px 8px">${habSubA!==null&&habSubB!==null?fmtDelta(habSubB-habSubA,habSubA):'—'}</td></tr>
-          <tr style="background:var(--bg3)"><td colspan="4" style="padding:4px 8px;font-size:0.68rem;color:var(--text3);text-transform:uppercase;letter-spacing:.06em"><span class="badge badge-deduc">Deducciones</span></td></tr>
+          <tr style="background:var(--bg3)"><td colspan="4" style="padding:4px 8px;font-size:0.68rem;color:var(--text3)"><span class="badge badge-deduc">Deducciones</span></td></tr>
           ${allD.map(n=>makeRow(n,rA?.deducciones,rB?.deducciones)).join('')}
           <tr class="subtotal"><td style="padding:6px 8px">Subtotal deduc.</td><td class="ta-r" style="padding:6px 8px">${dedSubA!==null?fmt(dedSubA):'—'}</td><td class="ta-r" style="padding:6px 8px">${dedSubB!==null?fmt(dedSubB):'—'}</td><td class="ta-r" style="padding:6px 8px">${dedSubA!==null&&dedSubB!==null?fmtDelta(dedSubB-dedSubA,dedSubA):'—'}</td></tr>
           <tr class="row-neto"><td style="padding:7px 8px">Neto</td><td class="ta-r" style="padding:7px 8px">${netoA!==null?fmt(netoA):'—'}</td><td class="ta-r" style="padding:7px 8px">${netoB!==null?fmt(netoB):'—'}</td><td class="ta-r" style="padding:7px 8px">${netoA!==null&&netoB!==null?fmtDelta(netoB-netoA,netoA):'—'}</td></tr>
@@ -755,187 +510,79 @@ function renderComparacion() {
       </table></div>
     </div>`;
   }).join('');
-  const netDiff = netB-netA;
-  el.innerHTML = `
-    <div class="metrics-grid" style="grid-template-columns:repeat(3,1fr)">
-      <div class="metric-card"><div class="metric-label">Neto ${a}</div><div class="metric-val">${fmt(netA)}</div></div>
-      <div class="metric-card"><div class="metric-label">Neto ${b}</div><div class="metric-val">${fmt(netB)}</div></div>
-      <div class="metric-card" style="border-color:${netDiff>=0?'rgba(74,222,128,0.3)':'rgba(248,113,113,0.3)'}"><div class="metric-label">Diferencia</div><div class="metric-val ${netDiff>=0?'delta-pos':'delta-neg'}">${netDiff>=0?'+':''}${fmt(netDiff)}</div></div>
-    </div>
-    ${cargoBlocks}`;
-}
+  const netDiff=netB-netA;
+  el.innerHTML=`<div class="metrics-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="metric-card"><div class="metric-label">Neto ${a}</div><div class="metric-val">${fmt(netA)}</div></div>
+    <div class="metric-card"><div class="metric-label">Neto ${b}</div><div class="metric-val">${fmt(netB)}</div></div>
+    <div class="metric-card" style="border-color:${netDiff>=0?'rgba(74,222,128,0.3)':'rgba(248,113,113,0.3)'}"><div class="metric-label">Diferencia</div><div class="metric-val ${netDiff>=0?'delta-pos':'delta-neg'}">${netDiff>=0?'+':''}${fmt(netDiff)}</div></div>
+  </div>${cargoBlocks}`;
+};
 
-// ── ANÁLISIS ──
-let chartInstances = {};
-function destroyChart(id) {
-  if (chartInstances[id]) { chartInstances[id].destroy(); delete chartInstances[id]; }
-}
+// ── análisis ──
+function destroyChart(id){ if(chartInstances[id]){chartInstances[id].destroy();delete chartInstances[id];} }
 
-function renderAnalisis() {
-  const el = document.getElementById('analisis-content');
-  const lucas = getRecibos('lucas');
-  const karina = getRecibos('karina');
-  const all = getAllRecibos();
-  if (!lucas.length && !karina.length) { el.innerHTML = '<div class="empty-state">No hay recibos cargados todavía.</div>'; return; }
-
-  // Agrupar por mes y usuario
-  const byMesUser = {};
-  all.forEach(r => {
-    const k = r.mes+'|'+(r.usuario||'lucas');
-    if (!byMesUser[k]) byMesUser[k] = {mes:r.mes, usuario:r.usuario||'lucas', neto:0, haberes:0, horas:0, recibos:[]};
-    byMesUser[k].neto += r.neto;
-    byMesUser[k].haberes += r.totalHaberes;
-    byMesUser[k].horas += (r.horas||0);
-    byMesUser[k].recibos.push(r);
-  });
-  const entries = Object.values(byMesUser).sort((a,b)=>a.mes.localeCompare(b.mes));
-  const meses = [...new Set(entries.map(e=>e.mes))];
-
-  // métricas globales
-  const totalNetoL = lucas.reduce((a,r)=>a+r.neto,0);
-  const totalNetoK = karina.reduce((a,r)=>a+r.neto,0);
-  const totalHorasL = lucas.reduce((a,r)=>a+(r.horas||0),0);
-  const totalHorasK = karina.reduce((a,r)=>a+(r.horas||0),0);
-  const nphL = totalHorasL > 0 ? (lucas.filter(r=>r.horas).reduce((a,r)=>a+r.neto,0) / totalHorasL) : null;
-  const nphK = totalHorasK > 0 ? (karina.filter(r=>r.horas).reduce((a,r)=>a+r.neto,0) / totalHorasK) : null;
-
-  el.innerHTML = `
+function renderAnalisis(){
+  const el=document.getElementById('analisis-content');
+  const lucas=getArr('lucas'), karina=getArr('karina'), all=getAll();
+  if(!lucas.length&&!karina.length){el.innerHTML='<div class="empty-state">No hay recibos cargados todavía.</div>';return;}
+  const byMU={};
+  all.forEach(r=>{ const k=r.mes+'|'+r.usuario; if(!byMU[k])byMU[k]={mes:r.mes,usuario:r.usuario,neto:0,horas:0}; byMU[k].neto+=r.neto; byMU[k].horas+=(r.horas||0); });
+  const entries=Object.values(byMU).sort((a,b)=>a.mes.localeCompare(b.mes));
+  const meses=[...new Set(entries.map(e=>e.mes))];
+  const totNetoL=lucas.reduce((a,r)=>a+r.neto,0), totNetoK=karina.reduce((a,r)=>a+r.neto,0);
+  const totHorasL=lucas.reduce((a,r)=>a+(r.horas||0),0), totHorasK=karina.reduce((a,r)=>a+(r.horas||0),0);
+  const nphL=totHorasL>0?lucas.filter(r=>r.horas).reduce((a,r)=>a+r.neto,0)/totHorasL:null;
+  const nphK=totHorasK>0?karina.filter(r=>r.horas).reduce((a,r)=>a+r.neto,0)/totHorasK:null;
+  el.innerHTML=`
     <div class="metrics-grid">
-      <div class="metric-card" style="border-color:rgba(108,138,255,0.25)">
-        <div class="metric-label" style="color:var(--lucas)">Neto total Lucas</div>
-        <div class="metric-val" style="color:var(--lucas)">${fmt(totalNetoL)}</div>
-        <div class="metric-sub">${lucas.length} recibo${lucas.length!==1?'s':''} cargado${lucas.length!==1?'s':''}</div>
-      </div>
-      <div class="metric-card" style="border-color:rgba(255,126,179,0.25)">
-        <div class="metric-label" style="color:var(--karina)">Neto total Karina</div>
-        <div class="metric-val" style="color:var(--karina)">${fmt(totalNetoK)}</div>
-        <div class="metric-sub">${karina.length} recibo${karina.length!==1?'s':''} cargado${karina.length!==1?'s':''}</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">Neto combinado</div>
-        <div class="metric-val">${fmt(totalNetoL+totalNetoK)}</div>
-        <div class="metric-sub">${all.length} recibos en total</div>
-      </div>
-      ${totalHorasL>0?`<div class="metric-card">
-        <div class="metric-label" style="color:var(--lucas)">Horas declaradas Lucas</div>
-        <div class="metric-val">${totalHorasL}hs</div>
-        ${nphL?`<div class="metric-sub">${fmt(nphL)}/hora</div>`:''}
-      </div>`:''}
-      ${totalHorasK>0?`<div class="metric-card">
-        <div class="metric-label" style="color:var(--karina)">Horas declaradas Karina</div>
-        <div class="metric-val">${totalHorasK}hs</div>
-        ${nphK?`<div class="metric-sub">${fmt(nphK)}/hora</div>`:''}
-      </div>`:''}
+      <div class="metric-card" style="border-color:rgba(108,138,255,0.25)"><div class="metric-label" style="color:var(--lucas)">Neto total Lucas</div><div class="metric-val" style="color:var(--lucas)">${fmt(totNetoL)}</div><div class="metric-sub">${lucas.length} recibo${lucas.length!==1?'s':''}</div></div>
+      <div class="metric-card" style="border-color:rgba(255,126,179,0.25)"><div class="metric-label" style="color:var(--karina)">Neto total Karina</div><div class="metric-val" style="color:var(--karina)">${fmt(totNetoK)}</div><div class="metric-sub">${karina.length} recibo${karina.length!==1?'s':''}</div></div>
+      <div class="metric-card"><div class="metric-label">Neto combinado</div><div class="metric-val">${fmt(totNetoL+totNetoK)}</div><div class="metric-sub">${all.length} recibos en total</div></div>
+      ${totHorasL>0?`<div class="metric-card"><div class="metric-label" style="color:var(--lucas)">Horas Lucas</div><div class="metric-val">${totHorasL}hs</div>${nphL?`<div class="metric-sub">${fmt(nphL)}/hs</div>`:''}</div>`:''}
+      ${totHorasK>0?`<div class="metric-card"><div class="metric-label" style="color:var(--karina)">Horas Karina</div><div class="metric-val">${totHorasK}hs</div>${nphK?`<div class="metric-sub">${fmt(nphK)}/hs</div>`:''}</div>`:''}
     </div>
-    <div class="chart-card">
-      <div class="chart-title">Evolución del neto por mes</div>
-      <canvas id="chart-evolucion" height="220"></canvas>
-    </div>
-    ${totalHorasL>0||totalHorasK>0?`<div class="chart-card">
-      <div class="chart-title">Horas declaradas por mes</div>
-      <canvas id="chart-horas" height="180"></canvas>
-    </div>`:''}
-    <div class="chart-card">
-      <div class="chart-title">Composición del sueldo — último mes disponible</div>
-      <canvas id="chart-comp" height="220"></canvas>
-    </div>`;
-
-  setTimeout(() => {
-    // Chart 1: evolución neto
-    const lucasByMes = meses.map(m => { const e=entries.find(e=>e.mes===m&&e.usuario==='lucas'); return e?e.neto:null; });
-    const karinaByMes = meses.map(m => { const e=entries.find(e=>e.mes===m&&e.usuario==='karina'); return e?e.neto:null; });
+    <div class="chart-card"><div class="chart-title">Evolución del neto por mes</div><canvas id="chart-evolucion" height="220"></canvas></div>
+    ${totHorasL>0||totHorasK>0?`<div class="chart-card"><div class="chart-title">Horas declaradas por mes</div><canvas id="chart-horas" height="180"></canvas></div>`:''}
+    <div class="chart-card"><div class="chart-title">Composición — último mes disponible</div><canvas id="chart-comp" height="220"></canvas></div>`;
+  setTimeout(()=>{
+    const lByM=meses.map(m=>{const e=entries.find(e=>e.mes===m&&e.usuario==='lucas');return e?e.neto:null;});
+    const kByM=meses.map(m=>{const e=entries.find(e=>e.mes===m&&e.usuario==='karina');return e?e.neto:null;});
     destroyChart('evolucion');
-    const ctx1 = document.getElementById('chart-evolucion');
-    if (ctx1) {
-      chartInstances['evolucion'] = new Chart(ctx1, {
-        type:'line',
-        data:{
-          labels: meses,
-          datasets:[
-            {label:'Lucas',data:lucasByMes,borderColor:'#6c8aff',backgroundColor:'rgba(108,138,255,0.08)',tension:0.3,pointRadius:5,pointBackgroundColor:'#6c8aff',spanGaps:true},
-            {label:'Karina',data:karinaByMes,borderColor:'#ff7eb3',backgroundColor:'rgba(255,126,179,0.08)',tension:0.3,pointRadius:5,pointBackgroundColor:'#ff7eb3',spanGaps:true}
-          ]
-        },
-        options:{
-          responsive:true, interaction:{mode:'index',intersect:false},
-          plugins:{legend:{labels:{color:'#8e8e9a',font:{size:12}}},tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${fmt(ctx.raw)}`}}},
-          scales:{
-            x:{ticks:{color:'#5a5a66',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}},
-            y:{ticks:{color:'#5a5a66',font:{size:11},callback:v=>'$'+Math.round(v/1000)+'k'},grid:{color:'rgba(255,255,255,0.04)'}}
-          }
-        }
-      });
-    }
-
-    // Chart 2: horas
-    if (totalHorasL>0||totalHorasK>0) {
-      const horasL = meses.map(m=>{ const e=entries.find(e=>e.mes===m&&e.usuario==='lucas'); return e?e.horas:null; });
-      const horasK = meses.map(m=>{ const e=entries.find(e=>e.mes===m&&e.usuario==='karina'); return e?e.horas:null; });
+    const ctx1=document.getElementById('chart-evolucion');
+    if(ctx1) chartInstances['evolucion']=new Chart(ctx1,{type:'line',data:{labels:meses,datasets:[
+      {label:'Lucas',data:lByM,borderColor:'#6c8aff',backgroundColor:'rgba(108,138,255,0.08)',tension:0.3,pointRadius:5,pointBackgroundColor:'#6c8aff',spanGaps:true},
+      {label:'Karina',data:kByM,borderColor:'#ff7eb3',backgroundColor:'rgba(255,126,179,0.08)',tension:0.3,pointRadius:5,pointBackgroundColor:'#ff7eb3',spanGaps:true}
+    ]},options:{responsive:true,interaction:{mode:'index',intersect:false},
+      plugins:{legend:{labels:{color:'#8e8e9a',font:{size:12}}},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${fmt(c.raw)}`}}},
+      scales:{x:{ticks:{color:'#5a5a66',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}},y:{ticks:{color:'#5a5a66',font:{size:11},callback:v=>'$'+Math.round(v/1000)+'k'},grid:{color:'rgba(255,255,255,0.04)'}}}}});
+    if(totHorasL>0||totHorasK>0){
+      const hL=meses.map(m=>{const e=entries.find(e=>e.mes===m&&e.usuario==='lucas');return e?e.horas:null;});
+      const hK=meses.map(m=>{const e=entries.find(e=>e.mes===m&&e.usuario==='karina');return e?e.horas:null;});
       destroyChart('horas');
-      const ctx2 = document.getElementById('chart-horas');
-      if (ctx2) {
-        chartInstances['horas'] = new Chart(ctx2, {
-          type:'bar',
-          data:{labels:meses,datasets:[
-            {label:'Lucas',data:horasL,backgroundColor:'rgba(108,138,255,0.5)',borderColor:'#6c8aff',borderWidth:1},
-            {label:'Karina',data:horasK,backgroundColor:'rgba(255,126,179,0.5)',borderColor:'#ff7eb3',borderWidth:1}
-          ]},
-          options:{responsive:true,
-            plugins:{legend:{labels:{color:'#8e8e9a',font:{size:12}}}},
-            scales:{
-              x:{ticks:{color:'#5a5a66',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}},
-              y:{ticks:{color:'#5a5a66',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}}
-            }
-          }
-        });
-      }
+      const ctx2=document.getElementById('chart-horas');
+      if(ctx2) chartInstances['horas']=new Chart(ctx2,{type:'bar',data:{labels:meses,datasets:[
+        {label:'Lucas',data:hL,backgroundColor:'rgba(108,138,255,0.5)',borderColor:'#6c8aff',borderWidth:1},
+        {label:'Karina',data:hK,backgroundColor:'rgba(255,126,179,0.5)',borderColor:'#ff7eb3',borderWidth:1}
+      ]},options:{responsive:true,plugins:{legend:{labels:{color:'#8e8e9a',font:{size:12}}}},
+        scales:{x:{ticks:{color:'#5a5a66',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}},y:{ticks:{color:'#5a5a66',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}}}}});
     }
-
-    // Chart 3: composición último mes
-    const lastMes = meses[meses.length-1];
-    const lastL = lucas.filter(r=>r.mes===lastMes);
-    const lastK = karina.filter(r=>r.mes===lastMes);
-    const habL = lastL.reduce((a,r)=>a+r.totalHaberes,0);
-    const dedL = lastL.reduce((a,r)=>a+Math.abs(r.totalDeduc),0);
-    const habK = lastK.reduce((a,r)=>a+r.totalHaberes,0);
-    const dedK = lastK.reduce((a,r)=>a+Math.abs(r.totalDeduc),0);
-    const datasets = [];
-    if (habL>0) datasets.push({label:'Lucas — haberes',data:[habL,0],backgroundColor:'rgba(108,138,255,0.7)'});
-    if (dedL>0) datasets.push({label:'Lucas — deduc.',data:[dedL,0],backgroundColor:'rgba(108,138,255,0.25)'});
-    if (habK>0) datasets.push({label:'Karina — haberes',data:[0,habK],backgroundColor:'rgba(255,126,179,0.7)'});
-    if (dedK>0) datasets.push({label:'Karina — deduc.',data:[0,dedK],backgroundColor:'rgba(255,126,179,0.25)'});
+    const lastMes=meses[meses.length-1];
+    const lastL=lucas.filter(r=>r.mes===lastMes), lastK=karina.filter(r=>r.mes===lastMes);
+    const habL=lastL.reduce((a,r)=>a+r.totalHaberes,0), dedL=lastL.reduce((a,r)=>a+Math.abs(r.totalDeduc),0);
+    const habK=lastK.reduce((a,r)=>a+r.totalHaberes,0), dedK=lastK.reduce((a,r)=>a+Math.abs(r.totalDeduc),0);
+    const ds=[];
+    if(habL>0) ds.push({label:'Lucas — haberes',data:[habL,0],backgroundColor:'rgba(108,138,255,0.7)'});
+    if(dedL>0) ds.push({label:'Lucas — deduc.',data:[dedL,0],backgroundColor:'rgba(108,138,255,0.25)'});
+    if(habK>0) ds.push({label:'Karina — haberes',data:[0,habK],backgroundColor:'rgba(255,126,179,0.7)'});
+    if(dedK>0) ds.push({label:'Karina — deduc.',data:[0,dedK],backgroundColor:'rgba(255,126,179,0.25)'});
     destroyChart('comp');
-    const ctx3 = document.getElementById('chart-comp');
-    if (ctx3 && datasets.length) {
-      chartInstances['comp'] = new Chart(ctx3, {
-        type:'bar',
-        data:{labels:['Lucas','Karina'],datasets},
-        options:{
-          responsive:true, indexAxis:'y',
-          plugins:{legend:{labels:{color:'#8e8e9a',font:{size:11}}},tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${fmt(ctx.raw)}`}}},
-          scales:{
-            x:{stacked:true,ticks:{color:'#5a5a66',font:{size:11},callback:v=>'$'+Math.round(v/1000)+'k'},grid:{color:'rgba(255,255,255,0.04)'}},
-            y:{stacked:true,ticks:{color:'#5a5a66',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}}
-          }
-        }
-      });
-    }
-  }, 50);
+    const ctx3=document.getElementById('chart-comp');
+    if(ctx3&&ds.length) chartInstances['comp']=new Chart(ctx3,{type:'bar',data:{labels:['Lucas','Karina'],datasets:ds},
+      options:{responsive:true,indexAxis:'y',
+        plugins:{legend:{labels:{color:'#8e8e9a',font:{size:11}}},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${fmt(c.raw)}`}}},
+        scales:{x:{stacked:true,ticks:{color:'#5a5a66',font:{size:11},callback:v=>'$'+Math.round(v/1000)+'k'},grid:{color:'rgba(255,255,255,0.04)'}},y:{stacked:true,ticks:{color:'#5a5a66',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}}}}});
+  },50);
 }
-
-// ── UTILS ──
-function fmt(n) {
-  return '$'+(parseFloat(n)||0).toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});
-}
-function fmtDelta(diff, valA) {
-  if (Math.abs(diff)<0.01) return '<span class="delta-zero">Sin cambio</span>';
-  const pct = valA!==0?((diff/Math.abs(valA))*100).toFixed(1):'—';
-  const cls = diff>0?'delta-pos':'delta-neg';
-  const sign = diff>0?'+':'';
-  return `<span class="${cls}">${sign}${fmt(diff)}<br><small style="font-weight:400;font-size:0.7rem">${sign}${pct}%</small></span>`;
-}
-
-init();
 </script>
 </body>
 </html>
