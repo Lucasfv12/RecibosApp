@@ -157,14 +157,10 @@ main{padding:1.5rem;max-width:860px;margin:0 auto;}
   </nav>
   <main>
     <div id="tab-cargar" class="tab active">
-      <div class="section-header"><div class="section-title">Cargar recibo</div><div class="section-sub">Subí el PDF y Claude extrae los datos automáticamente.</div></div>
-      <div class="upload-zone" onclick="document.getElementById('file-input').click()">
-        <i class="ti ti-file-upload"></i><p><strong>Hacé clic para subir</strong> o arrastrá el PDF acá</p>
-      </div>
-      <input type="file" id="file-input" accept=".pdf" style="display:none" onchange="handleFile(this)">
-      <div id="loading-state" style="display:none"><div class="loading-bar"><div class="spinner"></div> Leyendo con Claude...</div></div>
+      <div class="section-header"><div class="section-title">Nuevo recibo</div><div class="section-sub">Completá los datos del recibo y guardá.</div></div>
       <div id="error-state" style="display:none" class="error-box"></div>
       <div id="form-container"></div>
+      <div id="form-nuevo"></div>
     </div>
     <div id="tab-mis" class="tab">
       <div class="section-header"><div class="section-title">Mis recibos</div><div class="section-sub" id="mis-sub"></div></div>
@@ -343,6 +339,27 @@ async function onUserReady(){
   showTab('cargar');
 }
 
+function mostrarFormNuevo(){
+  const d = {
+    usuario: currentUser,
+    mes: '', cargo: '', tipo: '', recibo: '', legajo: '', antiguedad: '', horas: null,
+    haberes: [
+      {nombre:'Sueldo básico', valor:0},
+      {nombre:'Antigüedad', valor:0},
+      {nombre:'Bonif. remunerativa (45.5)', valor:0},
+      {nombre:'Bonificación no jerárquica (66.7)', valor:0},
+      {nombre:'Bonificación x índice (45.1)', valor:0}
+    ],
+    deducciones: [
+      {nombre:'IPS (16%)', valor:0},
+      {nombre:'Obra social (3%)', valor:0},
+      {nombre:'Sindicato SADOP (2%)', valor:0}
+    ],
+    totalHaberes: 0, totalDeduc: 0, neto: 0
+  };
+  renderForm(d, null);
+}
+
 function unsubAll(){ listeners.forEach(u=>u()); listeners=[]; }
 
 // ── NAV ──
@@ -351,6 +368,7 @@ window.showTab = function(t){
   document.querySelectorAll('.nav-btn').forEach(el=>el.classList.remove('active'));
   document.getElementById('tab-'+t).classList.add('active');
   document.getElementById('nav-'+t).classList.add('active');
+  if(t==='cargar') mostrarFormNuevo();
   if(t==='mis') renderMis();
   if(t==='todos') renderTodos();
   if(t==='comparar') renderComparacionSelects();
@@ -365,36 +383,7 @@ function refreshTab(){
   if(id==='analisis') renderAnalisis();
 }
 
-// ── UPLOAD / CLAUDE ──
-window.handleFile = function(input){
-  const file=input.files[0]; if(!file) return;
-  const reader=new FileReader();
-  reader.onload=async e=>{
-    const b64=e.target.result.split(',')[1];
-    document.getElementById('loading-state').style.display='block';
-    document.getElementById('error-state').style.display='none';
-    document.getElementById('form-container').innerHTML='';
-    try{
-      const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:[
-          {type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}},
-          {type:'text',text:`Extraé los datos del recibo de sueldo. Solo JSON válido, sin markdown:\n{"mes":"Mes Año","cargo":"nombre del cargo","tipo":"tipo sección","recibo":"número","legajo":"número","antiguedad":"porcentaje","horas":número o null,"haberes":[{"nombre":"concepto","valor":número}],"deducciones":[{"nombre":"concepto","valor":número negativo}],"totalHaberes":número,"totalDeduc":número negativo,"neto":número}`}
-        ]}]})
-      });
-      const data=await resp.json();
-      const text=data.content.map(c=>c.text||'').join('');
-      const parsed=JSON.parse(text.replace(/```json|```/g,'').trim());
-      parsed.usuario=currentUser;
-      document.getElementById('loading-state').style.display='none';
-      renderForm(parsed,null);
-    }catch{
-      document.getElementById('loading-state').style.display='none';
-      document.getElementById('error-state').style.display='block';
-      document.getElementById('error-state').textContent='No se pudo leer el PDF. Intentá de nuevo.';
-    }
-  };
-  reader.readAsDataURL(file); input.value='';
-};
+// ── UPLOAD / CLAUDE removido — carga manual ──
 
 // ── FORM ──
 function renderForm(d,key){
@@ -425,6 +414,7 @@ function renderForm(d,key){
         <div class="total-card" style="background:rgba(108,138,255,0.08);border-color:rgba(108,138,255,0.2)"><div class="total-label">Neto a cobrar</div><div class="total-valor" style="color:var(--lucas)" id="t-net">${fmt(d.neto)}</div></div>
       </div>
       <button class="save-btn ${currentUser}-btn" onclick="guardar()"><i class="ti ti-device-floppy"></i> Guardar en Firebase</button>
+      <button onclick="mostrarFormNuevo()" style="width:100%;padding:0.6rem;font-size:0.82rem;cursor:pointer;border-radius:var(--radius-sm);border:1px solid var(--border);background:none;color:var(--text2);font-family:inherit;margin-top:0.5rem;transition:color 0.15s"><i class="ti ti-plus"></i> Nuevo recibo</button>
     </div>`;
 }
 
@@ -456,7 +446,7 @@ window.guardar=async function(){
   try{
     const k=editingKey||mkKey();
     await set(ref(db,`recibos/${currentUser}/${k}`),currentData);
-    document.getElementById('form-container').innerHTML='<div class="success-box"><i class="ti ti-circle-check"></i> Recibo guardado en Firebase.</div>';
+    document.getElementById('form-container').innerHTML='<div class="success-box"><i class="ti ti-circle-check"></i> Recibo guardado en Firebase.</div><button onclick="mostrarFormNuevo()" style="width:100%;padding:0.6rem;font-size:0.82rem;cursor:pointer;border-radius:var(--radius-sm);border:1px solid var(--border);background:none;color:var(--text2);font-family:inherit;margin-top:0.5rem"><i class="ti ti-plus"></i> Cargar otro recibo</button>';
     currentData=null; editingKey=null;
   }catch(e){
     document.getElementById('error-state').style.display='block';
