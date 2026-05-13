@@ -572,6 +572,67 @@ window.renderComparacion=function(){
 
 // ── ANÁLISIS ──
 function destroyChart(id){ if(chartInstances[id]){chartInstances[id].destroy();delete chartInstances[id];} }
+
+// Mapeo nombre de mes → número (para ordenar y clasificar semestre)
+const MES_NUM = {'Enero':1,'Febrero':2,'Marzo':3,'Abril':4,'Mayo':5,'Junio':6,'Julio':7,'Agosto':8,'Septiembre':9,'Octubre':10,'Noviembre':11,'Diciembre':12};
+function parseMes(mesAnio) {
+  // "Abril 2026" → {mes:4, anio:2026}
+  const [m, a] = mesAnio.split(' ');
+  return { mes: MES_NUM[m]||0, anio: parseInt(a)||0 };
+}
+function calcSAC(recibos, semestre) {
+  // semestre: 1 = enero-junio, 2 = julio-diciembre
+  const mesesSem = semestre===1 ? [1,2,3,4,5,6] : [7,8,9,10,11,12];
+  // Agrupar bruto por mes (suma de todos los recibos de ese mes)
+  const brutoMes = {};
+  recibos.forEach(r => {
+    const {mes, anio} = parseMes(r.mes);
+    if (!mesesSem.includes(mes)) return;
+    const k = `${anio}-${String(mes).padStart(2,'0')}`;
+    brutoMes[k] = (brutoMes[k]||0) + r.totalHaberes;
+  });
+  if (!Object.keys(brutoMes).length) return null;
+  const mejorK = Object.entries(brutoMes).sort((a,b)=>b[1]-a[1])[0];
+  const mejorMesNum = parseInt(mejorK[0].split('-')[1]);
+  const mejorNombre = Object.keys(MES_NUM).find(k=>MES_NUM[k]===mejorMesNum)||'';
+  const mejorAnio = mejorK[0].split('-')[0];
+  return {
+    sac: mejorK[1] / 2,
+    mejorBruto: mejorK[1],
+    mejorMes: `${mejorNombre} ${mejorAnio}`,
+    mesesCargados: Object.keys(brutoMes).length,
+    mesesSemestre: 6
+  };
+}
+
+function sacCard(usuario, semestre, data) {
+  const color = usuario==='lucas' ? 'var(--lucas)' : 'var(--karina)';
+  const colorBg = usuario==='lucas' ? 'rgba(108,138,255,0.08)' : 'rgba(255,126,179,0.08)';
+  const colorBorder = usuario==='lucas' ? 'rgba(108,138,255,0.3)' : 'rgba(255,126,179,0.3)';
+  const nombre = usuario==='lucas' ? 'Lucas' : 'Karina';
+  const label = semestre===1 ? '1° SAC (junio)' : '2° SAC (diciembre)';
+  const mesesLabel = semestre===1 ? 'ene–jun' : 'jul–dic';
+  if (!data) return `<div class="metric-card" style="border-color:${colorBorder}">
+    <div class="metric-label" style="color:${color}">${nombre} · ${label}</div>
+    <div class="metric-val" style="color:var(--text3);font-size:0.85rem">Sin datos ${mesesLabel}</div>
+  </div>`;
+  const progreso = Math.min(data.mesesCargados / data.mesesSemestre * 100, 100);
+  return `<div class="metric-card" style="border-color:${colorBorder};background:${colorBg}">
+    <div class="metric-label" style="color:${color}">${nombre} · ${label}</div>
+    <div class="metric-val" style="color:${color}">${fmt(data.sac)}</div>
+    <div class="metric-sub">Mejor bruto: ${fmt(data.mejorBruto)} (${data.mejorMes})</div>
+    <div style="margin-top:8px">
+      <div style="display:flex;justify-content:space-between;font-size:0.68rem;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:3px">
+        <span>${data.mesesCargados}/${data.mesesSemestre} meses cargados</span>
+        <span>${Math.round(progreso)}%</span>
+      </div>
+      <div style="background:var(--bg3);border-radius:99px;height:4px">
+        <div style="background:${color};width:${progreso}%;height:4px;border-radius:99px;transition:width 0.3s"></div>
+      </div>
+    </div>
+  </div>`;
+}
+
 function renderAnalisis(){
   const el=document.getElementById('analisis-content');
   const lucas=getArr('lucas'), karina=getArr('karina'), all=getAll();
@@ -584,6 +645,13 @@ function renderAnalisis(){
   const totHorasL=lucas.reduce((a,r)=>a+(r.horas||0),0), totHorasK=karina.reduce((a,r)=>a+(r.horas||0),0);
   const nphL=totHorasL>0?lucas.filter(r=>r.horas).reduce((a,r)=>a+r.neto,0)/totHorasL:null;
   const nphK=totHorasK>0?karina.filter(r=>r.horas).reduce((a,r)=>a+r.neto,0)/totHorasK:null;
+
+  // SAC por semestre
+  const sacL1=calcSAC(lucas,1), sacL2=calcSAC(lucas,2);
+  const sacK1=calcSAC(karina,1), sacK2=calcSAC(karina,2);
+  const sacCombinado1 = (sacL1&&sacK1) ? {sac:sacL1.sac+sacK1.sac} : null;
+  const sacCombinado2 = (sacL2&&sacK2) ? {sac:sacL2.sac+sacK2.sac} : null;
+
   el.innerHTML=`
     <div class="metrics-grid">
       <div class="metric-card" style="border-color:rgba(108,138,255,0.25)"><div class="metric-label" style="color:var(--lucas)">Neto total Lucas</div><div class="metric-val" style="color:var(--lucas)">${fmt(totNetoL)}</div><div class="metric-sub">${lucas.length} recibo${lucas.length!==1?'s':''}</div></div>
@@ -592,6 +660,24 @@ function renderAnalisis(){
       ${totHorasL>0?`<div class="metric-card"><div class="metric-label" style="color:var(--lucas)">Horas Lucas</div><div class="metric-val">${totHorasL}hs</div>${nphL?`<div class="metric-sub">${fmt(nphL)}/hs</div>`:''}</div>`:''}
       ${totHorasK>0?`<div class="metric-card"><div class="metric-label" style="color:var(--karina)">Horas Karina</div><div class="metric-val">${totHorasK}hs</div>${nphK?`<div class="metric-sub">${fmt(nphK)}/hs</div>`:''}</div>`:''}
     </div>
+
+    <div style="margin-bottom:0.5rem;font-size:0.85rem;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:0.5rem">
+      <i class="ti ti-calendar-stats"></i> Aguinaldo (SAC)
+      <span style="font-size:0.72rem;color:var(--text3);font-weight:400;font-family:'DM Mono',monospace">= mejor bruto del semestre ÷ 2</span>
+    </div>
+    <div class="metrics-grid" style="margin-bottom:0.5rem">
+      ${sacCard('lucas',1,sacL1)}
+      ${sacCard('lucas',2,sacL2)}
+    </div>
+    <div class="metrics-grid" style="margin-bottom:0.5rem">
+      ${sacCard('karina',1,sacK1)}
+      ${sacCard('karina',2,sacK2)}
+    </div>
+    ${sacCombinado1||sacCombinado2 ? `<div class="metrics-grid" style="margin-bottom:1.25rem">
+      ${sacCombinado1?`<div class="metric-card" style="border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.06)"><div class="metric-label" style="color:var(--amber)">SAC combinado · 1° (junio)</div><div class="metric-val" style="color:var(--amber)">${fmt(sacCombinado1.sac)}</div></div>`:''}
+      ${sacCombinado2?`<div class="metric-card" style="border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.06)"><div class="metric-label" style="color:var(--amber)">SAC combinado · 2° (diciembre)</div><div class="metric-val" style="color:var(--amber)">${fmt(sacCombinado2.sac)}</div></div>`:''}
+    </div>` : ''}
+
     <div class="chart-card"><div class="chart-title">Evolución del neto por mes</div><canvas id="chart-evolucion" height="220"></canvas></div>
     ${totHorasL>0||totHorasK>0?`<div class="chart-card"><div class="chart-title">Horas declaradas por mes</div><canvas id="chart-horas" height="180"></canvas></div>`:''}
     <div class="chart-card"><div class="chart-title">Composición — último mes disponible</div><canvas id="chart-comp" height="220"></canvas></div>`;
