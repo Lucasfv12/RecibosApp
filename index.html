@@ -24,24 +24,27 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{background:var(--bg);color:var(--text);min-height:100vh;}
 
-#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2rem;position:relative;overflow:hidden;}
+/* LOGIN */
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;position:relative;overflow:hidden;}
 #login-screen::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(108,138,255,0.06) 0%,transparent 70%);top:-200px;left:-100px;pointer-events:none;}
 #login-screen::after{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(255,126,179,0.06) 0%,transparent 70%);bottom:-150px;right:-50px;pointer-events:none;}
 .login-title{font-size:1.5rem;font-weight:700;color:var(--text2);text-align:center;z-index:1;}
 .login-title span{color:var(--text);}
-.login-cards{display:flex;gap:1rem;z-index:1;}
-.login-card{width:180px;padding:2rem 1.5rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg2);cursor:pointer;text-align:center;transition:transform 0.15s,border-color 0.15s,background 0.15s;display:flex;flex-direction:column;align-items:center;gap:1rem;}
-.login-card:hover{transform:translateY(-4px);}
-.login-card.lucas:hover{border-color:var(--lucas);background:var(--lucas-bg);}
-.login-card.karina:hover{border-color:var(--karina);background:var(--karina-bg);}
-.login-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;}
-.lucas .login-avatar{background:var(--lucas-bg);color:var(--lucas);}
-.karina .login-avatar{background:var(--karina-bg);color:var(--karina);}
-.login-name{font-size:1rem;font-weight:600;}
-.login-sub{font-size:0.75rem;color:var(--text2);}
+.login-subtitle{font-size:0.82rem;color:var(--text3);z-index:1;}
+
+.login-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;width:320px;z-index:1;display:flex;flex-direction:column;gap:1rem;}
+.login-box-title{font-size:0.9rem;font-weight:600;color:var(--text2);margin-bottom:0.25rem;}
+.field-label{font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.3rem;font-family:'DM Mono',monospace;}
+.field-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.55rem 0.75rem;font-size:0.85rem;color:var(--text);font-family:inherit;transition:border-color 0.15s;}
+.field-input:focus{outline:none;border-color:var(--border2);}
+.login-btn{width:100%;padding:0.75rem;font-size:0.9rem;font-weight:600;cursor:pointer;border-radius:var(--radius-sm);border:none;font-family:inherit;transition:opacity 0.15s;background:var(--lucas);color:#fff;}
+.login-btn:hover{opacity:0.85;}
+.login-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.login-error{font-size:0.8rem;color:var(--red);background:var(--red-bg);border-radius:var(--radius-sm);padding:0.6rem 0.75rem;display:none;}
 .login-loading{font-size:0.82rem;color:var(--text3);display:none;align-items:center;gap:0.5rem;z-index:1;}
 .login-loading.show{display:flex;}
 
+/* APP */
 #app{display:none;min-height:100vh;}
 header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;}
 .header-left{display:flex;align-items:center;gap:0.75rem;}
@@ -76,9 +79,6 @@ main{padding:1.5rem;max-width:860px;margin:0 auto;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .error-box{background:var(--red-bg);border:1px solid var(--red);border-radius:var(--radius-sm);padding:0.85rem 1rem;font-size:0.83rem;color:var(--red);margin-bottom:1rem;}
 .success-box{background:var(--green-bg);border:1px solid var(--green);border-radius:var(--radius-sm);padding:0.85rem 1rem;font-size:0.83rem;color:var(--green);margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;}
-.field-label{font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.3rem;font-family:'DM Mono',monospace;}
-.field-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.5rem 0.75rem;font-size:0.85rem;color:var(--text);font-family:inherit;transition:border-color 0.15s;}
-.field-input:focus{outline:none;border-color:var(--border2);}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:0.75rem;}
 .divider-label{font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;padding:0.5rem 0;margin:0.75rem 0 0.5rem;border-bottom:1px solid var(--border);font-family:'DM Mono',monospace;display:flex;align-items:center;gap:0.5rem;}
 .concepto-row{display:grid;grid-template-columns:1fr 130px 28px;gap:0.5rem;align-items:center;margin-bottom:0.4rem;}
@@ -133,21 +133,27 @@ main{padding:1.5rem;max-width:860px;margin:0 auto;}
 </head>
 <body>
 
+<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-title"><span>Recibos</span> · Lucas & Karina</div>
-  <div class="login-cards">
-    <div class="login-card lucas" onclick="login('lucas')">
-      <div class="login-avatar">LV</div>
-      <div><div class="login-name" style="color:var(--lucas)">Lucas</div><div class="login-sub">Vergara</div></div>
+  <div class="login-subtitle">Ingresá con tu cuenta para continuar</div>
+  <div class="login-box">
+    <div class="login-box-title">Iniciar sesión</div>
+    <div>
+      <div class="field-label">Email</div>
+      <input class="field-input" id="login-email" type="email" placeholder="tu@email.com" autocomplete="email">
     </div>
-    <div class="login-card karina" onclick="login('karina')">
-      <div class="login-avatar">KT</div>
-      <div><div class="login-name" style="color:var(--karina)">Karina</div><div class="login-sub">Tiripicchio</div></div>
+    <div>
+      <div class="field-label">Contraseña</div>
+      <input class="field-input" id="login-pass" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()">
     </div>
+    <div class="login-error" id="login-error"></div>
+    <button class="login-btn" id="login-btn" onclick="doLogin()">Ingresar</button>
   </div>
-  <div class="login-loading" id="login-loading"><div class="spinner"></div> Conectando...</div>
+  <div class="login-loading" id="login-loading"><div class="spinner"></div> Iniciando sesión...</div>
 </div>
 
+<!-- APP -->
 <div id="app">
   <header>
     <div class="header-left">
@@ -201,9 +207,11 @@ main{padding:1.5rem;max-width:860px;margin:0 auto;}
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
-import { getDatabase, ref, set, onValue, remove } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-database.js";
+import { initializeApp }                                              from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+import { getDatabase, ref, set, onValue, remove }                    from "https://www.gstatic.com/firebasejs/11.7.1/firebase-database.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
 
+// ── CONFIG ──
 const firebaseConfig = {
   apiKey: "AIzaSyCpmhcgdH7LDY9Ac2Jn7RZIv5_Yb_rFges",
   authDomain: "recibos-lk.firebaseapp.com",
@@ -214,16 +222,26 @@ const firebaseConfig = {
   databaseURL: "https://recibos-lk-default-rtdb.firebaseio.com"
 };
 
+// UID → nombre de usuario legible
+const UID_MAP = {
+  "xqIB7olzVAgik5LDVsVSDNHa3MD3": "lucas",
+  "CH4DJHfvZZYrmBAG5gDv4i6c6md2": "karina"
+};
+
 const fbApp = initializeApp(firebaseConfig);
-const db = getDatabase(fbApp);
+const db    = getDatabase(fbApp);
+const auth  = getAuth(fbApp);
 
-let currentUser = null;
-let cachedData = { lucas:{}, karina:{} };
-let listeners = [];
-let chartInstances = {};
-let editingKey = null;
-let currentData = null;
+// ── ESTADO ──
+let currentUser   = null; // 'lucas' | 'karina'
+let currentUID    = null;
+let cachedData    = { lucas:{}, karina:{} };
+let listeners     = [];
+let chartInstances= {};
+let currentData   = null;
+let editingKey    = null;
 
+// ── DATOS INICIALES Lucas ──
 const INITIAL_LUCAS = [
   { usuario:'lucas', mes:'Abril 2026', cargo:'Bibliotecario Secundaria', tipo:'SECUND.SUBV.', recibo:'284', legajo:'28/1', antiguedad:'54%', horas:null,
     haberes:[{nombre:'Sueldo básico',valor:392179.20},{nombre:'Antigüedad (54%)',valor:211776.77},{nombre:'Bonif. remunerativa (45.5)',valor:132599.00},{nombre:'Bonificación no jerárquica (66.7)',valor:138896.80},{nombre:'Bonificación x índice (45.1)',valor:243477.92},{nombre:'Conectividad nacional (257.5)',valor:28700.00}],
@@ -235,14 +253,14 @@ const INITIAL_LUCAS = [
     totalHaberes:745952.88, totalDeduc:-156650.11, neto:589302.77 }
 ];
 
-// ── helpers ──
+// ── HELPERS ──
 const fmt = n => '$'+(parseFloat(n)||0).toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});
-const tipoBadge = d => d&&d.tipo&&d.tipo.includes('SUBV')&&!d.tipo.includes('NO') ? 'badge-sub' : 'badge-nosub';
-const setSyncing = () => { document.getElementById('sync-dot').classList.add('syncing'); document.getElementById('sync-text').textContent='guardando...'; };
-const setSynced  = () => { document.getElementById('sync-dot').classList.remove('syncing'); document.getElementById('sync-text').textContent='sincronizado'; };
+const tipoBadge = d => d&&d.tipo&&d.tipo.includes('SUBV')&&!d.tipo.includes('NO') ? 'badge-sub':'badge-nosub';
 const mkKey = () => Date.now()+'_'+Math.random().toString(36).slice(2,7);
 const getArr = u => Object.entries(cachedData[u]||{}).map(([k,v])=>({...v,_key:k}));
 const getAll = () => [...getArr('lucas').map(r=>({...r,usuario:'lucas'})),...getArr('karina').map(r=>({...r,usuario:'karina'}))];
+const setSyncing = () => { document.getElementById('sync-dot').classList.add('syncing'); document.getElementById('sync-text').textContent='guardando...'; };
+const setSynced  = () => { document.getElementById('sync-dot').classList.remove('syncing'); document.getElementById('sync-text').textContent='sincronizado'; };
 
 function fmtDelta(diff,valA){
   if(Math.abs(diff)<0.01) return '<span class="delta-zero">Sin cambio</span>';
@@ -251,43 +269,87 @@ function fmtDelta(diff,valA){
   return `<span class="${cls}">${sign}${fmt(diff)}<br><small style="font-weight:400;font-size:0.7rem">${sign}${pct}%</small></span>`;
 }
 
-// ── login / logout ──
-window.login = async function(user){
+// ── AUTH ──
+onAuthStateChanged(auth, user => {
+  if(user && UID_MAP[user.uid]){
+    currentUID  = user.uid;
+    currentUser = UID_MAP[user.uid];
+    onUserReady();
+  } else {
+    showLoginScreen();
+  }
+});
+
+window.doLogin = async function(){
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  const errEl = document.getElementById('login-error');
+  const btn   = document.getElementById('login-btn');
+  errEl.style.display='none';
+  if(!email||!pass){ errEl.textContent='Completá email y contraseña.'; errEl.style.display='block'; return; }
+  btn.disabled=true;
   document.getElementById('login-loading').classList.add('show');
-  currentUser = user;
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    // onAuthStateChanged se encarga del resto
+  } catch(e) {
+    let msg = 'Error al iniciar sesión.';
+    if(e.code==='auth/invalid-credential'||e.code==='auth/wrong-password') msg='Email o contraseña incorrectos.';
+    if(e.code==='auth/user-not-found') msg='No existe una cuenta con ese email.';
+    if(e.code==='auth/too-many-requests') msg='Demasiados intentos. Esperá unos minutos.';
+    errEl.textContent=msg; errEl.style.display='block';
+    btn.disabled=false;
+    document.getElementById('login-loading').classList.remove('show');
+  }
+};
+
+window.doLogout = async function(){
+  unsubAll(); cachedData={lucas:{},karina:{}};
+  await signOut(auth);
+};
+
+function showLoginScreen(){
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('login-loading').classList.remove('show');
+  document.getElementById('login-btn').disabled=false;
+  document.getElementById('login-pass').value='';
+}
+
+function onUserReady(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+  const pill=document.getElementById('user-pill');
+  pill.className='user-pill '+currentUser;
+  pill.textContent=currentUser==='lucas'?'Lucas V.':'Karina T.';
+  document.getElementById('mis-sub').textContent=`Recibos de ${currentUser==='lucas'?'Lucas Vergara':'Karina Tiripicchio'}.`;
+
+  // Escuchar ambos nodos en tiempo real
   unsubAll();
   ['lucas','karina'].forEach(u=>{
-    const unsub = onValue(ref(db,`recibos/${u}`), snap=>{
-      cachedData[u] = snap.val()||{};
+    const unsub=onValue(ref(db,`recibos/${u}`), snap=>{
+      cachedData[u]=snap.val()||{};
       setSynced();
       refreshTab();
     });
     listeners.push(unsub);
   });
-  // seed inicial para lucas si está vacío
-  onValue(ref(db,'recibos/lucas'), async snap=>{
-    if(!snap.val()){
-      for(const r of INITIAL_LUCAS){ await set(ref(db,`recibos/lucas/${mkKey()}`),r); }
-    }
-  },{onlyOnce:true});
-  document.getElementById('login-loading').classList.remove('show');
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('app').style.display='block';
-  const pill=document.getElementById('user-pill');
-  pill.className='user-pill '+user;
-  pill.textContent=user==='lucas'?'Lucas V.':'Karina T.';
-  document.getElementById('mis-sub').textContent=`Recibos de ${user==='lucas'?'Lucas Vergara':'Karina Tiripicchio'}.`;
-  showTab('cargar');
-};
 
-window.doLogout = function(){
-  unsubAll(); currentUser=null; cachedData={lucas:{},karina:{}};
-  document.getElementById('app').style.display='none';
-  document.getElementById('login-screen').style.display='flex';
-};
+  // Seed inicial para Lucas
+  if(currentUser==='lucas'){
+    onValue(ref(db,'recibos/lucas'), async snap=>{
+      if(!snap.val()){
+        for(const r of INITIAL_LUCAS){ await set(ref(db,`recibos/lucas/${mkKey()}`),r); }
+      }
+    },{onlyOnce:true});
+  }
+
+  showTab('cargar');
+}
+
 function unsubAll(){ listeners.forEach(u=>u()); listeners=[]; }
 
-// ── nav ──
+// ── NAV ──
 window.showTab = function(t){
   document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(el=>el.classList.remove('active'));
@@ -298,6 +360,7 @@ window.showTab = function(t){
   if(t==='comparar') renderComparacionSelects();
   if(t==='analisis') renderAnalisis();
 };
+
 function refreshTab(){
   const active=document.querySelector('.tab.active'); if(!active) return;
   const id=active.id.replace('tab-','');
@@ -307,7 +370,7 @@ function refreshTab(){
   if(id==='analisis') renderAnalisis();
 }
 
-// ── upload / claude ──
+// ── UPLOAD / CLAUDE ──
 window.handleFile = function(input){
   const file=input.files[0]; if(!file) return;
   const reader=new FileReader();
@@ -320,7 +383,7 @@ window.handleFile = function(input){
       const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:[
           {type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}},
-          {type:'text',text:`Extraé los datos del recibo. Solo JSON válido, sin markdown:\n{"mes":"Mes Año","cargo":"nombre","tipo":"tipo sección","recibo":"número","legajo":"número","antiguedad":"porcentaje","horas":número o null,"haberes":[{"nombre":"concepto","valor":número}],"deducciones":[{"nombre":"concepto","valor":número negativo}],"totalHaberes":número,"totalDeduc":número negativo,"neto":número}`}
+          {type:'text',text:`Extraé los datos del recibo de sueldo. Solo JSON válido, sin markdown:\n{"mes":"Mes Año","cargo":"nombre del cargo","tipo":"tipo sección","recibo":"número","legajo":"número","antiguedad":"porcentaje","horas":número o null,"haberes":[{"nombre":"concepto","valor":número}],"deducciones":[{"nombre":"concepto","valor":número negativo}],"totalHaberes":número,"totalDeduc":número negativo,"neto":número}`}
         ]}]})
       });
       const data=await resp.json();
@@ -338,7 +401,7 @@ window.handleFile = function(input){
   reader.readAsDataURL(file); input.value='';
 };
 
-// ── form ──
+// ── FORM ──
 function renderForm(d,key){
   currentData=JSON.parse(JSON.stringify(d)); editingKey=key||null;
   document.getElementById('form-container').innerHTML=`
@@ -409,7 +472,7 @@ window.guardar=async function(){
   }
 };
 
-// ── historial ──
+// ── HISTORIAL ──
 function renderMis(){ renderHistorial(document.getElementById('mis-list'),getArr(currentUser).map(r=>({...r,usuario:currentUser})),false); }
 function renderTodos(){ renderHistorial(document.getElementById('todos-list'),getAll(),true); }
 
@@ -458,7 +521,7 @@ function renderHistorial(el,recibos,showUser){
 window.editarRecibo=function(user,key){ const r=cachedData[user][key]; if(!r) return; showTab('cargar'); renderForm({...r},key); };
 window.eliminarRecibo=async function(user,key){ if(!confirm('¿Eliminar este recibo?')) return; setSyncing(); await remove(ref(db,`recibos/${user}/${key}`)); };
 
-// ── comparar ──
+// ── COMPARAR ──
 window.renderComparacionSelects=function(){
   const u=document.getElementById('comp-user').value;
   const recibos=u==='ambos'?getAll():getArr(u).map(r=>({...r,usuario:u}));
@@ -518,7 +581,7 @@ window.renderComparacion=function(){
   </div>${cargoBlocks}`;
 };
 
-// ── análisis ──
+// ── ANÁLISIS ──
 function destroyChart(id){ if(chartInstances[id]){chartInstances[id].destroy();delete chartInstances[id];} }
 
 function renderAnalisis(){
