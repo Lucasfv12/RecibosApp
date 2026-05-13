@@ -684,25 +684,39 @@ function renderAnalisis(){
       ${sacCombinado2?`<div class="metric-card" style="border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.06)"><div class="metric-label" style="color:var(--amber)">SAC combinado · 2° (diciembre)</div><div class="metric-val" style="color:var(--amber)">${fmt(sacCombinado2.sac)}</div></div>`:''}
     </div>` : ''}
 
-    <div style="margin-bottom:0.5rem;font-size:0.85rem;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:0.5rem">
-      <i class="ti ti-receipt-tax"></i> Descuentos sindicales acumulados (SADOP)
+    <div style="margin-bottom:0.75rem;font-size:0.85rem;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:0.5rem">
+      <i class="ti ti-receipt-tax"></i> Descuento SADOP por mes
     </div>
-    <div class="metrics-grid" style="margin-bottom:1.25rem">
-      <div class="metric-card" style="border-color:rgba(108,138,255,0.25)">
-        <div class="metric-label" style="color:var(--lucas)">SADOP Lucas</div>
-        <div class="metric-val" style="color:var(--lucas)">${fmt(Math.abs(lucas.reduce((a,r)=>a+(r.deducciones||[]).filter(d=>d.nombre.toLowerCase().includes('sadop')).reduce((s,d)=>s+d.valor,0),0)))}</div>
-        <div class="metric-sub">${lucas.length} recibo${lucas.length!==1?'s':''}</div>
-      </div>
-      <div class="metric-card" style="border-color:rgba(255,126,179,0.25)">
-        <div class="metric-label" style="color:var(--karina)">SADOP Karina</div>
-        <div class="metric-val" style="color:var(--karina)">${fmt(Math.abs(karina.reduce((a,r)=>a+(r.deducciones||[]).filter(d=>d.nombre.toLowerCase().includes('sadop')).reduce((s,d)=>s+d.valor,0),0)))}</div>
-        <div class="metric-sub">${karina.length} recibo${karina.length!==1?'s':''}</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">SADOP combinado</div>
-        <div class="metric-val">${fmt(Math.abs(all.reduce((a,r)=>a+(r.deducciones||[]).filter(d=>d.nombre.toLowerCase().includes('sadop')).reduce((s,d)=>s+d.valor,0),0)))}</div>
-        <div class="metric-sub">total acumulado</div>
-      </div>
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:1.25rem">
+      <table style="width:100%;border-collapse:collapse;font-size:0.82rem;font-family:'DM Mono',monospace">
+        <thead>
+          <tr style="background:var(--bg3)">
+            <th style="padding:8px 12px;text-align:left;font-size:0.7rem;color:var(--text3);font-weight:500;border-bottom:1px solid var(--border)">Período</th>
+            <th style="padding:8px 12px;text-align:right;font-size:0.7rem;color:var(--lucas);font-weight:500;border-bottom:1px solid var(--border)">Lucas</th>
+            <th style="padding:8px 12px;text-align:right;font-size:0.7rem;color:var(--karina);font-weight:500;border-bottom:1px solid var(--border)">Karina</th>
+            <th style="padding:8px 12px;text-align:right;font-size:0.7rem;color:var(--text3);font-weight:500;border-bottom:1px solid var(--border)">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${meses.map(mes=>{
+            const sadopL = Math.abs(lucas.filter(r=>r.mes===mes).reduce((a,r)=>a+(r.deducciones||[]).filter(d=>d.nombre.toLowerCase().includes('sadop')).reduce((s,d)=>s+d.valor,0),0));
+            const sadopK = Math.abs(karina.filter(r=>r.mes===mes).reduce((a,r)=>a+(r.deducciones||[]).filter(d=>d.nombre.toLowerCase().includes('sadop')).reduce((s,d)=>s+d.valor,0),0));
+            const total = sadopL + sadopK;
+            return `<tr style="border-bottom:1px solid var(--border)">
+              <td style="padding:8px 12px;color:var(--text)">${mes}</td>
+              <td style="padding:8px 12px;text-align:right;color:var(--lucas)">${sadopL>0?fmt(sadopL):'—'}</td>
+              <td style="padding:8px 12px;text-align:right;color:var(--karina)">${sadopK>0?fmt(sadopK):'—'}</td>
+              <td style="padding:8px 12px;text-align:right;color:var(--red);font-weight:600">${fmt(total)}</td>
+            </tr>`;
+          }).join('')}
+          <tr style="background:var(--bg3)">
+            <td style="padding:8px 12px;font-weight:600;color:var(--text)">Total acumulado</td>
+            <td style="padding:8px 12px;text-align:right;color:var(--lucas);font-weight:600">${fmt(Math.abs(lucas.reduce((a,r)=>a+(r.deducciones||[]).filter(d=>d.nombre.toLowerCase().includes('sadop')).reduce((s,d)=>s+d.valor,0),0)))}</td>
+            <td style="padding:8px 12px;text-align:right;color:var(--karina);font-weight:600">${fmt(Math.abs(karina.reduce((a,r)=>a+(r.deducciones||[]).filter(d=>d.nombre.toLowerCase().includes('sadop')).reduce((s,d)=>s+d.valor,0),0)))}</td>
+            <td style="padding:8px 12px;text-align:right;color:var(--red);font-weight:600">${fmt(Math.abs(all.reduce((a,r)=>a+(r.deducciones||[]).filter(d=>d.nombre.toLowerCase().includes('sadop')).reduce((s,d)=>s+d.valor,0),0)))}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="chart-card"><div class="chart-title">Evolución del neto por mes</div><canvas id="chart-evolucion" height="220"></canvas></div>
     ${totHorasL>0||totHorasK>0?`<div class="chart-card"><div class="chart-title">Horas declaradas por mes</div><canvas id="chart-horas" height="180"></canvas></div>`:''}
