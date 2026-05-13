@@ -461,7 +461,10 @@ function renderHistorial(el,recibos,showUser){
   if(!recibos.length){el.innerHTML='<div class="empty-state">No hay recibos cargados todavía.</div>';return;}
   const ag={};
   recibos.forEach(r=>{if(!ag[r.mes])ag[r.mes]=[];ag[r.mes].push(r);});
-  el.innerHTML=Object.entries(ag).sort((a,b)=>a[0].localeCompare(b[0])).map(([mes,list])=>{
+  // Orden cronológico por mes
+  const MES_ORD = {'Enero':1,'Febrero':2,'Marzo':3,'Abril':4,'Mayo':5,'Junio':6,'Julio':7,'Agosto':8,'Septiembre':9,'Octubre':10,'Noviembre':11,'Diciembre':12};
+  function mesKey(m){ const [n,a]=m.split(' '); return (parseInt(a)||0)*100+(MES_ORD[n]||0); }
+  el.innerHTML=Object.entries(ag).sort((a,b)=>mesKey(a[0])-mesKey(b[0])).map(([mes,list])=>{
     const netoTotal=list.reduce((a,r)=>a+r.neto,0);
     const detalles=list.map(r=>{
       const ub=showUser?`<span class="badge badge-${r.usuario}">${r.usuario==='lucas'?'Lucas':'Karina'}</span>`:'';
@@ -640,7 +643,9 @@ function renderAnalisis(){
   if(!lucas.length&&!karina.length){el.innerHTML='<div class="empty-state">No hay recibos cargados todavía.</div>';return;}
   const byMU={};
   all.forEach(r=>{ const k=r.mes+'|'+r.usuario; if(!byMU[k])byMU[k]={mes:r.mes,usuario:r.usuario,neto:0,horas:0}; byMU[k].neto+=r.neto; byMU[k].horas+=(r.horas||0); });
-  const entries=Object.values(byMU).sort((a,b)=>a.mes.localeCompare(b.mes));
+  const MES_ORD2 = {'Enero':1,'Febrero':2,'Marzo':3,'Abril':4,'Mayo':5,'Junio':6,'Julio':7,'Agosto':8,'Septiembre':9,'Octubre':10,'Noviembre':11,'Diciembre':12};
+  function mesKey2(m){ const [n,a]=m.split(' '); return (parseInt(a)||0)*100+(MES_ORD2[n]||0); }
+  const entries=Object.values(byMU).sort((a,b)=>mesKey2(a.mes)-mesKey2(b.mes));
   const meses=[...new Set(entries.map(e=>e.mes))];
   const totNetoL=lucas.reduce((a,r)=>a+r.neto,0), totNetoK=karina.reduce((a,r)=>a+r.neto,0);
   const totHorasL=lucas.reduce((a,r)=>a+(r.horas||0),0), totHorasK=karina.reduce((a,r)=>a+(r.horas||0),0);
@@ -679,6 +684,26 @@ function renderAnalisis(){
       ${sacCombinado2?`<div class="metric-card" style="border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.06)"><div class="metric-label" style="color:var(--amber)">SAC combinado · 2° (diciembre)</div><div class="metric-val" style="color:var(--amber)">${fmt(sacCombinado2.sac)}</div></div>`:''}
     </div>` : ''}
 
+    <div style="margin-bottom:0.5rem;font-size:0.85rem;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:0.5rem">
+      <i class="ti ti-receipt-tax"></i> Descuentos sindicales acumulados (SADOP)
+    </div>
+    <div class="metrics-grid" style="margin-bottom:1.25rem">
+      <div class="metric-card" style="border-color:rgba(108,138,255,0.25)">
+        <div class="metric-label" style="color:var(--lucas)">SADOP Lucas</div>
+        <div class="metric-val" style="color:var(--lucas)">${fmt(Math.abs(lucas.reduce((a,r)=>a+(r.deducciones||[]).filter(d=>d.nombre.toLowerCase().includes('sadop')).reduce((s,d)=>s+d.valor,0),0)))}</div>
+        <div class="metric-sub">${lucas.length} recibo${lucas.length!==1?'s':''}</div>
+      </div>
+      <div class="metric-card" style="border-color:rgba(255,126,179,0.25)">
+        <div class="metric-label" style="color:var(--karina)">SADOP Karina</div>
+        <div class="metric-val" style="color:var(--karina)">${fmt(Math.abs(karina.reduce((a,r)=>a+(r.deducciones||[]).filter(d=>d.nombre.toLowerCase().includes('sadop')).reduce((s,d)=>s+d.valor,0),0)))}</div>
+        <div class="metric-sub">${karina.length} recibo${karina.length!==1?'s':''}</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">SADOP combinado</div>
+        <div class="metric-val">${fmt(Math.abs(all.reduce((a,r)=>a+(r.deducciones||[]).filter(d=>d.nombre.toLowerCase().includes('sadop')).reduce((s,d)=>s+d.valor,0),0)))}</div>
+        <div class="metric-sub">total acumulado</div>
+      </div>
+    </div>
     <div class="chart-card"><div class="chart-title">Evolución del neto por mes</div><canvas id="chart-evolucion" height="220"></canvas></div>
     ${totHorasL>0||totHorasK>0?`<div class="chart-card"><div class="chart-title">Horas declaradas por mes</div><canvas id="chart-horas" height="180"></canvas></div>`:''}
     <div class="chart-card"><div class="chart-title">Composición — último mes disponible</div><canvas id="chart-comp" height="220"></canvas></div>`;
