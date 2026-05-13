@@ -308,10 +308,10 @@ function showLoginScreen(){
 async function onUserReady(){
   // Seed de datos iniciales para Lucas — usando get() en lugar de onValue para no interferir con el listener
   if(currentUser === 'lucas'){
-    const snap = await get(ref(db,'recibos/lucas'));
+    const snap = await get(ref(db,`recibos/${UID_LUCAS}`));
     if(!snap.val()){
       for(const r of INITIAL_LUCAS){
-        await set(ref(db,`recibos/lucas/${mkKey()}`), r);
+        await set(ref(db,`recibos/${UID_LUCAS}/${mkKey()}`), r);
       }
     }
   }
@@ -327,9 +327,9 @@ async function onUserReady(){
 
   // Escuchar en tiempo real ambos nodos
   unsubAll();
-  ['lucas','karina'].forEach(u=>{
-    const unsub=onValue(ref(db,`recibos/${u}`), snap=>{
-      cachedData[u]=snap.val()||{};
+  [['lucas',UID_LUCAS],['karina',UID_KARINA]].forEach(([nombre,uid])=>{
+    const unsub=onValue(ref(db,`recibos/${uid}`), snap=>{
+      cachedData[nombre]=snap.val()||{};
       setSynced();
       refreshTab();
     });
@@ -445,7 +445,7 @@ window.guardar=async function(){
   recalc(); setSyncing();
   try{
     const k=editingKey||mkKey();
-    await set(ref(db,`recibos/${currentUser}/${k}`),currentData);
+    await set(ref(db,`recibos/${currentUID}/${k}`),currentData);
     document.getElementById('form-container').innerHTML='<div class="success-box"><i class="ti ti-circle-check"></i> Recibo guardado en Firebase.</div><button onclick="mostrarFormNuevo()" style="width:100%;padding:0.6rem;font-size:0.82rem;cursor:pointer;border-radius:var(--radius-sm);border:1px solid var(--border);background:none;color:var(--text2);font-family:inherit;margin-top:0.5rem"><i class="ti ti-plus"></i> Cargar otro recibo</button>';
     currentData=null; editingKey=null;
   }catch(e){
@@ -499,7 +499,7 @@ function renderHistorial(el,recibos,showUser){
   }).join('');
 }
 window.editarRecibo=function(user,key){ const r=cachedData[user][key]; if(!r) return; showTab('cargar'); renderForm({...r},key); };
-window.eliminarRecibo=async function(user,key){ if(!confirm('¿Eliminar este recibo?')) return; setSyncing(); await remove(ref(db,`recibos/${user}/${key}`)); };
+window.eliminarRecibo=async function(user,key){ if(!confirm('¿Eliminar este recibo?')) return; setSyncing(); const uid=user==='lucas'?UID_LUCAS:UID_KARINA; await remove(ref(db,`recibos/${uid}/${key}`)); };
 
 // ── COMPARAR ──
 window.renderComparacionSelects=function(){
