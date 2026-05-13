@@ -617,10 +617,21 @@ function sacCard(usuario, semestre, data) {
     <div class="metric-val" style="color:var(--text3);font-size:0.85rem">Sin datos ${mesesLabel}</div>
   </div>`;
   const progreso = Math.min(data.mesesCargados / data.mesesSemestre * 100, 100);
+  const sacBruto = data.sac;
+  const sacNeto = sacBruto * 0.79; // 21% descuentos: IPS 16% + OS 3% + SADOP 2%
   return `<div class="metric-card" style="border-color:${colorBorder};background:${colorBg}">
     <div class="metric-label" style="color:${color}">${nombre} · ${label}</div>
-    <div class="metric-val" style="color:${color}">${fmt(data.sac)}</div>
-    <div class="metric-sub">Mejor bruto: ${fmt(data.mejorBruto)} (${data.mejorMes})</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px">
+      <div>
+        <div style="font-size:0.68rem;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:2px">BRUTO</div>
+        <div style="font-size:0.95rem;font-weight:600;font-family:'DM Mono',monospace;color:${color}">${fmt(sacBruto)}</div>
+      </div>
+      <div>
+        <div style="font-size:0.68rem;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:2px">NETO (~79%)</div>
+        <div style="font-size:0.95rem;font-weight:600;font-family:'DM Mono',monospace;color:var(--green)">${fmt(sacNeto)}</div>
+      </div>
+    </div>
+    <div class="metric-sub">Mejor bruto mensual: ${fmt(data.mejorBruto)} (${data.mejorMes})</div>
     <div style="margin-top:8px">
       <div style="display:flex;justify-content:space-between;font-size:0.68rem;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:3px">
         <span>${data.mesesCargados}/${data.mesesSemestre} meses cargados</span>
